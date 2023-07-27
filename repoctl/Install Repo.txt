@@ -1,0 +1,3 @@
+paru -S repoctl
+
+Reset Repo : repoctl reset -P xerolinux_repo
