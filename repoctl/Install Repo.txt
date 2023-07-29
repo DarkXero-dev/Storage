@@ -1,3 +1,7 @@
-paru -S repoctl
+yay -S repoctl
 
 Reset Repo : repoctl reset -P xerolinux_repo
+             repoctl reset -P xerolinux_repo_xl
+             repoctl reset -P xerolinux_nvidia_repo
+             repoctl reset -P xhbp
+             repoctl reset -P xiso

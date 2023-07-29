@@ -242,6 +242,7 @@ alias urepo='cd /run/media/techxero/XeroROG/Repos/Github/xerolinux_repo/ && ./up
 alias uirepo='cd /run/media/techxero/XeroROG/Repos/Hoster/xiso/ && ./update.sh'
 alias uxrepo='cd /run/media/techxero/XeroROG/Repos/Hoster/xerolinux_repo_xl/ && ./update.sh'
 alias ugrepo='cd /run/media/techxero/XeroROG/Repos/Hoster/xhbp/ && ./update.sh'
+alias nvrepo='cd /run/media/techxero/XeroROG/Repos/Hoster/xerolinux_nvidia_repo/ && ./update.sh'
 
 #Restart Services
 
