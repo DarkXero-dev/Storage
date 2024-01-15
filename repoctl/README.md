@@ -2,10 +2,7 @@ yay -S [repoctl](https://github.com/cassava/repoctl)
 
 Set up Repo :  
 
-- Create new config : 
-```
-repoctl conf new /run/media/techxero/XeroROG/Repos/Github/xerolinux/x86_64/xerolinux.db.tar.zst
-```
+- Create new config : `repoctl conf new path/to/repo`
 - Initialize reo : `repoctl reset -P xerolinux`
 - Update repo : `repoctl update -P xerolinux`
 
