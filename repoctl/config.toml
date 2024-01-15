@@ -1,58 +1,10 @@
 columnate = false
 color = "auto"
 quiet = false
-default_profile = ""
+default_profile = "xerolinux"
 
-[profiles.xerolinux_repo]
-  repo = "/run/media/techxero/XeroROG/Repos/Github/xerolinux_repo/x86_64/xerolinux_repo.db.tar.zst"
-  add_params = []
-  rm_params = []
-  ignore_aur = []
-  require_signature = false
-  backup = false
-  backup_dir = ""
-  interactive = false
-  pre_action = ""
-  post_action = ""
-
-[profiles.xerolinux_repo_xl]
-  repo = "/run/media/techxero/XeroROG/Repos/Hoster/xerolinux_repo_xl/x86_64/xerolinux_repo_xl.db.tar.zst"
-  add_params = []
-  rm_params = []
-  ignore_aur = []
-  require_signature = false
-  backup = false
-  backup_dir = ""
-  interactive = false
-  pre_action = ""
-  post_action = ""
-
-[profiles.xerolinux_nvidia_repo]
-  repo = "/run/media/techxero/XeroROG/Repos/Hoster/xerolinux_nvidia_repo/x86_64/xerolinux_nvidia_repo.db.tar.zst"
-  add_params = []
-  rm_params = []
-  ignore_aur = []
-  require_signature = false
-  backup = false
-  backup_dir = ""
-  interactive = false
-  pre_action = ""
-  post_action = ""
-
-[profiles.xhbp]
-  repo = "/run/media/techxero/XeroROG/Repos/Hoster/xhbp/x86_64/xhbp.db.tar.zst"
-  add_params = []
-  rm_params = []
-  ignore_aur = []
-  require_signature = false
-  backup = false
-  backup_dir = ""
-  interactive = false
-  pre_action = ""
-  post_action = ""
-
-[profiles.xiso]
-  repo = "/run/media/techxero/XeroROG/Repos/Hoster/xiso/x86_64/xiso.db.tar.zst"
+[profiles.xerolinux]
+  repo = "/run/media/techxero/XeroROG/Repos/Github/xerolinux/x86_64/xerolinux.db.tar.zst"
   add_params = []
   rm_params = []
   ignore_aur = []
