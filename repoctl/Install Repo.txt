@@ -1,7 +1,6 @@
-yay -S repoctl
+yay -S [repoctl](https://github.com/cassava/repoctl)
 
-Reset Repo : repoctl reset -P xerolinux_repo
-             repoctl reset -P xerolinux_repo_xl
-             repoctl reset -P xerolinux_nvidia_repo
-             repoctl reset -P xhbp
-             repoctl reset -P xiso
+Set up Repo :  
+
+- repoctl conf new /run/media/techxero/XeroROG/Repos/Github/xerolinux/x86_64/xerolinux.db.tar.zst
+- repoctl reset -P xerolinux
