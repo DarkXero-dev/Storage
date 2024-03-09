@@ -4,7 +4,7 @@ Hey there, folks! Welcome back to another XeroLinux video! After quite a long br
 
 Oh, and while you're here, show some love by giving this video a thumbs up, hit that subscribe button if you haven't already, and don't forget to ring the bell so you never miss out on our latest stuff.
 
-Alright, let's cut to the chase and dive right in. See you on the flip side of this quick intro!
+Alright, let's cut to the chase and dive right in shall we ? See you on the flip side of this quick intro!
 
 ------------------------------------------------------------------------------------------------------------------
 
