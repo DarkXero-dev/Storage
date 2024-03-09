@@ -12,7 +12,7 @@ Alright, enough chit-chat, let's jump right into it. Catch you on the other side
 
 ### Outro
 
-Thanks for sticking around till the end! Your support means the world to me. If you'd like to chip in and help keep this project going (totally optional, of course!), you can show some love via the links in the description. Whether it's through Ko-Fi, Fundrazr, or becoming a GitHub sponsor, every little bit counts!
+If you've made it to the end, big thanks for sticking around! Your support is what keeps me motivated to create more content like this and fuels the XeroLinux community. If you feel like chipping in and helping to keep this project rolling (totally optional, by the way!), you can show some love through the links in the description. Whether it's via Ko-Fi, Fundrazr, or becoming a GitHub sponsor, every bit of support means the world to me!
 
 And hey, if you want to get some extra perks and be part of the cool club, consider becoming a channel member! You'll get early access to videos and other awesome goodies.
 
