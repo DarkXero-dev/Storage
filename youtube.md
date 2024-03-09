@@ -1,10 +1,10 @@
 ### Intro
 
-Hey there, folks! Welcome back to another XeroLinux video! After quite a long break, I'm excited to be back  reconnect with you all again! Here's hoping this return sticks, and I'm bringing you much better quality content to keep you entertained.
+Hey there, folks! Welcome back to another XeroLinux video! After quite a long break, I'm excited to be back to reconnect with you all again! Here's hoping this return sticks, and I'm bringing you much better quality content to keep you entertained.
 
 Oh, and while you're here, show some love by giving this video a thumbs up, hit that subscribe button if you haven't already, and don't forget to ring the bell so you never miss out on our latest stuff.
 
-Alright, let's cut to the chase and dive right in shall we ? See you on the flip side of this quick intro!
+Alright, let's cut to the chase and dive right in shall we ? Right after this quick intro!
 
 ------------------------------------------------------------------------------------------------------------------
 
