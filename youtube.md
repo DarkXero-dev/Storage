@@ -10,10 +10,10 @@ Alright, enough chit-chat, let's jump right into it. Catch you on the other side
 
 ### Outro
 
-Big thanks to all of you awesome viewers for sticking around till the end! Your support means the world to me. If you'd like to chip in and help keep this project going (totally optional, of course!), you can show some love via the links in the description. Whether it's through Ko-Fi, Fundrazr, or becoming a GitHub sponsor, every little bit counts!
+Big thanks to all of you awesome Linux G33ks, for sticking around till the end! Your support means the world to me. If you'd like to chip in and help keep this project going (totally optional, of course!), you can show some love via the links in the description. Whether it's through Ko-Fi, Fundrazr, or becoming a GitHub sponsor, every little bit counts!
 
 And hey, if you want to get some extra perks and be part of the cool club, consider becoming a channel member! You'll get early access to videos and other awesome goodies.
 
-Alrighty, that's a wrap for today, folks! I'll catch you all in the next video. Stay awesome!
+Alrighty, that's a wrap for today, folks! I'll catch you all in the next video. Stay awesome, peace out!
 
 
