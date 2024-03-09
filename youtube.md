@@ -8,6 +8,8 @@ Oh, and while you're here, show some love by giving this video a thumbs up, hit 
 
 Alright, enough chit-chat, let's jump right into it. Catch you on the other side of this new and short intro!
 
+------------------------------------------------------------------------------------------------------------------
+
 ### Outro
 
 Big thanks to all of you awesome Linux G33ks, for sticking around till the end! Your support means the world to me. If you'd like to chip in and help keep this project going (totally optional, of course!), you can show some love via the links in the description. Whether it's through Ko-Fi, Fundrazr, or becoming a GitHub sponsor, every little bit counts!
