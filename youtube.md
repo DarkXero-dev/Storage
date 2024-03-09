@@ -6,7 +6,7 @@ That being said, after quite a long break, I'm excited to reconnect with you all
 
 Oh, and while you're here, show some love by giving this video a thumbs up, hit that subscribe button if you haven't already, and don't forget to ring the bell so you never miss out on our latest stuff.
 
-Alright, enough chit-chat, let's jump right into it. Catch you on the other side of this new and short intro!
+Alright, let's cut to the chase and dive right in. See you on the flip side of this quick intro!
 
 ------------------------------------------------------------------------------------------------------------------
 
