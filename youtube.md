@@ -1,8 +1,8 @@
 ### Intro
 
-Hey there, folks! Welcome back to another XeroLinux video! After quite a long break, I'm excited to be back to reconnect with you all again! Here's hoping this return sticks, and content is much better quality keeping you entertained.
+Hey there, folks! Welcome back to another XeroLinux video! In today's video, we will be getting a bit more Nerdy...
 
-Oh, and while you're here, show some love by giving this video a thumbs up, hit that subscribe button if you haven't already, and don't forget to ring the bell so you never miss out on our latest stuff.
+But before we begin, show some love by giving this video a thumbs up, hit that subscribe button if you haven't already, and don't forget to ring the bell so you never miss out on our latest stuff.
 
 Alright, let's cut to the chase and dive right in shall we ? Right after this quick intro!
 
