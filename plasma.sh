@@ -38,7 +38,6 @@ systemctl enable nvidia-suspend.service nvidia-hibernate.service nvidia-resume.s
 sleep 3
 echo -e 'options nvidia NVreg_UsePageAttributeTable=1 NVreg_InitializeSystemMemoryAllocations=0 NVreg_DynamicPowerManagement=0x02' | sudo tee -a /etc/modprobe.d/nvidia.conf
 echo -e 'options nvidia_drm modeset=1 fbdev=1' | sudo tee -a /etc/modprobe.d/nvidia.conf
-echo
 sleep 3
 echo
 echo "#############################################"
