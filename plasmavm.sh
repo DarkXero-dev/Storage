@@ -48,6 +48,9 @@ sed -i 's/#\s*GRUB_DISABLE_OS_PROBER=false/GRUB_DISABLE_OS_PROBER=false/' '/etc/
 os-prober
 grub-mkconfig -o /boot/grub/grub.cfg
 echo
+echo "Adding VM Specific stuff"
+echo
+pacman -S --noconfirm --needed xf86-video-qxl spice-vdagent
 sleep 3
 echo "#############################################"
 echo "           Done, now exit n reboot           "
