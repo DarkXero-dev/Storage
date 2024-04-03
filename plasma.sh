@@ -65,6 +65,14 @@ os-prober
 grub-mkconfig -o /boot/grub/grub.cfg
 echo
 sleep 3
+echo
+echo "Installing your native shit..."
+echo
+pacman -S --needed --noconfirm vivaldi vivaldi-ffmpeg-codecs vivaldi-widevine meld timeshift nomachine elisa mpv gparted gnome-disk-utility wine-meta xero-fix-scripts xero-hooks
+echo
+grub-mkconfig -o /boot/grub/grub.cfg
+echo
+sleep 3
 echo "#############################################"
 echo "           Done, now exit n reboot           "
 echo "#############################################"
