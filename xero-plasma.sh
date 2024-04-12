@@ -14,7 +14,7 @@ echo "This is where you choose how to install Plasma. "
 echo "------------------------------------------------"
 echo
 echo "Minimal   : Minimal install. (ArchInstall method)."
-echo "Complete  : Full install, includes everything, Bloated."
+echo "Complete  : Full install, includes everything. (Bloated)."
 echo "XeroLinux : Curated set of Plasma packages (Best for all systems)."
 echo "Selective : Allows you to select individual packages. (Advanced Users)."
 echo
