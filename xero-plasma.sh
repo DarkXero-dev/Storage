@@ -16,7 +16,7 @@ echo "------------------------------------------------"
 echo
 echo "1. Minimal   : Minimal install. (Not Recommended)."
 echo "2. Complete  : Full install, includes everything. (Bloated)."
-echo "3. XeroLinux : Curated set of Plasma packages (Best for all systems)."
+echo "3. Curated   : Curated set of Plasma packages (Best for all systems)."
 echo "4. Selective : Allows you to select individual packages. (Advanced Users)."
 echo
 
