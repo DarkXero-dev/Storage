@@ -24,7 +24,7 @@ read -p "Enter your choice [1-4]: " choice
 
 case $choice in
   1)
-    pacman -S --needed --noconfirm plasma-meta konsole kate dolphin ark plasma-workspace egl-wayland falkon
+    pacman -S --needed --noconfirm plasma-meta konsole kate dolphin ark plasma-workspace egl-wayland flatpak-kcm breeze-grub spectacle dolphin-plugins falkon
     ;;
   2)
     pacman -S --needed --noconfirm kf6 qt6 plasma-meta kde-applications-meta kdeconnect packagekit-qt6 kde-cli-tools kdeplasma-addons plasma-activities polkit-kde-agent flatpak-kcm bluedevil glib2 ibus kaccounts-integration kscreen libaccounts-qt plasma-nm plasma-pa scim extra-cmake-modules kaccounts-integration kdoctools libibus wayland-protocols plasma-applet-window-buttons plasma-workspace appmenu-gtk-module kwayland-integration plasma5-integration xdg-desktop-portal-gtk
