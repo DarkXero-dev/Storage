@@ -96,11 +96,10 @@ sleep 3
 echo
 echo "Installing other useful applications..."
 echo
-pacman -S --needed --noconfirm meld timeshift elisa mpv gparted gnome-disk-utility wine-meta xero-fix-scripts xero-hooks
+pacman -S --needed --noconfirm meld timeshift elisa mpv gnome-disk-utility btop 
 echo
-grub-mkconfig -o /boot/grub/grub.cfg
-echo
-sleep 3
 echo "#############################################"
-echo "           Done, now exit and reboot          "
+echo "          Done, now exit and reboot          "
+echo " For further customization, plz use XeroCLI. "
 echo "#############################################"
+sleep 6
