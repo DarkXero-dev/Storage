@@ -55,12 +55,13 @@ pacman -S --noconfirm --needed linux-headers nvidia-dkms nvidia-utils lib32-nvid
 echo
 echo "Configuring for Wayland..."
 echo
-sed -i '/^MODULES=(/ s/)$/ nvidia nvidia_modeset nvidia_uvm nvidia_drm)/' /etc/mkinitcpio.conf && mkinitcpio -P
+sed -i '/^MODULES=(/ s/)$/ nvidia nvidia_modeset nvidia_uvm nvidia_drm)/' /etc/mkinitcpio.conf
 sleep 3
 systemctl enable nvidia-suspend.service nvidia-hibernate.service nvidia-resume.service nvidia-powerd.service
 sleep 3
 echo -e 'options nvidia NVreg_UsePageAttributeTable=1 NVreg_InitializeSystemMemoryAllocations=0 NVreg_DynamicPowerManagement=0x02' | tee -a /etc/modprobe.d/nvidia.conf
 echo -e 'options nvidia_drm modeset=1 fbdev=1' | tee -a /etc/modprobe.d/nvidia.conf
+mkinitcpio -P
 sleep 3
 echo
 echo "##############################################"
