@@ -75,7 +75,7 @@ sed -i '/^\s*#\s*\[multilib\]/,/^$/ s/^#//' /etc/pacman.conf
 echo
 echo "Installing Paru/Toolkit..."
 echo
-pacman -Syyu --noconfirm paru-bin xlapit-cli
+pacman -Syy --noconfirm paru-bin xlapit-cli
 echo
 echo "Installing PipeWire packages..."
 echo
