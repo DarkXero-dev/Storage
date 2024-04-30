@@ -14,7 +14,7 @@ echo
 echo "This is where you choose how to install Plasma."
 echo "------------------------------------------------"
 echo
-echo "1. Minimal   : Minimal install. (Not Recommended)."
+echo "1. Minimal   : Minimal install. (For older PCs only)."
 echo "2. Complete  : Full install, includes everything. (Bloated)."
 echo "3. Curated   : Curated set of Plasma packages (Best for all systems)."
 echo "4. Selective : Allows you to select individual packages. (Advanced Users)."
