@@ -1,6 +1,6 @@
 services:
   koel:
-    image: ghcr.io/phanan/koel
+    image: phanan/koel
     depends_on:
       - database
     ports:
