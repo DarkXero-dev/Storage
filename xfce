@@ -155,4 +155,4 @@ dialog --title "Installation Complete" --msgbox "\nInstallation Complete. Now ex
 # Exit chroot and reboot
 clear
 echo "Type exit to exit chroot environment and reboot system..."
-sleep 3```
+sleep 3
