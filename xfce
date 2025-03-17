@@ -95,8 +95,6 @@ main_menu() {
   # Only enable services after package installation
   systemctl enable lightdm.service
 
-}
-
 # Display main menu
 main_menu
 
