@@ -1,0 +1,64 @@
+# STARTED AT: 2025-02-07 22:40:25.923719465 +02:00
+# ARGS: rate-mirrors --allow-root --protocol https chaotic-aur
+# MIRRORS LEFT AFTER FILTERING: 21
+# JUMP #1
+# EXPLORING US
+# VISITED US
+# BLANK ITERATION
+# COUNTRY JUMPING YIELDED TOO FEW MIRRORS (0), ADDING OTHERS TO UNLABELED
+# 
+
+# TESTING UNLABELED MIRRORS
+# TOO FEW BYTES LOADED https://in-3-mirror.chaotic.cx/
+# TOO FEW BYTES LOADED https://us-tx-mirror.chaotic.cx/
+# TOO FEW BYTES LOADED https://es-2-mirror.chaotic.cx/
+# TOO FEW BYTES LOADED https://bg-mirror.chaotic.cx/
+# TOO FEW BYTES LOADED https://in-2-mirror.chaotic.cx/
+# TOO FEW BYTES LOADED https://ca-mirror.chaotic.cx/
+# SpeedTestResult { speed: 81.92 KB/s; elapsed: 990.956583ms; connection_time: 973.465831ms }
+# SpeedTestResult { speed: 437.06 KB/s; elapsed: 497.614672ms; connection_time: 1.089434411s }
+# SpeedTestResult { speed: 140.17 KB/s; elapsed: 993.561497ms; connection_time: 1.183784469s }
+# SpeedTestResult { speed: 162.97 KB/s; elapsed: 902.800199ms; connection_time: 1.275882998s }
+# TOO FEW BYTES LOADED https://de-4-mirror.chaotic.cx/
+# TOO FEW BYTES LOADED https://kr-mirror.chaotic.cx/
+# SpeedTestResult { speed: 84.72 KB/s; elapsed: 963.802449ms; connection_time: 1.61735206s }
+# SpeedTestResult { speed: 114.88 KB/s; elapsed: 996.004467ms; connection_time: 1.743170734s }
+# TOO FEW BYTES LOADED https://de-3-mirror.chaotic.cx/
+# TOO FEW BYTES LOADED https://br-mirror.chaotic.cx/
+# SpeedTestResult { speed: 89.64 KB/s; elapsed: 973.673205ms; connection_time: 2.111740028s }
+# SpeedTestResult { speed: 135.09 KB/s; elapsed: 968.236524ms; connection_time: 2.243657034s }
+# SpeedTestResult { speed: 102.30 KB/s; elapsed: 998.360977ms; connection_time: 2.488213885s }
+# SpeedTestResult { speed: 203.47 KB/s; elapsed: 985.429861ms; connection_time: 2.941088428s }
+# SpeedTestResult { speed: 379.01 KB/s; elapsed: 993.547077ms; connection_time: 3.117447068s }
+# 
+
+# RE-TESTING TOP MIRRORS
+# SpeedTestResult { speed: 951.65 KB/s; elapsed: 938.292032ms; connection_time: 1.073900031s }
+# SpeedTestResult { speed: 942.99 KB/s; elapsed: 972.689259ms; connection_time: 1.357108347s }
+# SpeedTestResult { speed: 863.12 KB/s; elapsed: 948.732398ms; connection_time: 1.540909012s }
+# SpeedTestResult { speed: 955.75 KB/s; elapsed: 975.447825ms; connection_time: 1.211239078s }
+# SpeedTestResult { speed: 905.13 KB/s; elapsed: 986.518471ms; connection_time: 2.653634283s }
+# ==== RESULTS (top re-tested) ====
+#   1. SpeedTestResult { speed: 955.75 KB/s; elapsed: 975.447825ms; connection_time: 1.211239078s } -> https://cdn-mirror.chaotic.cx/
+#   2. SpeedTestResult { speed: 951.65 KB/s; elapsed: 938.292032ms; connection_time: 1.073900031s } -> https://de-2-mirror.chaotic.cx/
+#   3. SpeedTestResult { speed: 942.99 KB/s; elapsed: 972.689259ms; connection_time: 1.357108347s } -> https://fr-mirror.chaotic.cx/
+#   4. SpeedTestResult { speed: 905.13 KB/s; elapsed: 986.518471ms; connection_time: 2.653634283s } -> https://es-mirror.chaotic.cx/
+#   5. SpeedTestResult { speed: 863.12 KB/s; elapsed: 948.732398ms; connection_time: 1.540909012s } -> https://us-ut-mirror.chaotic.cx/
+#   6. SpeedTestResult { speed: 135.09 KB/s; elapsed: 968.236524ms; connection_time: 2.243657034s } -> https://geo-mirror.chaotic.cx/
+#   7. SpeedTestResult { speed: 114.88 KB/s; elapsed: 996.004467ms; connection_time: 1.743170734s } -> https://cl-mirror.chaotic.cx/
+#   8. SpeedTestResult { speed: 102.30 KB/s; elapsed: 998.360977ms; connection_time: 2.488213885s } -> https://us-mi-mirror.chaotic.cx/
+#   9. SpeedTestResult { speed: 89.64 KB/s; elapsed: 973.673205ms; connection_time: 2.111740028s } -> https://in-mirror.chaotic.cx/
+#  10. SpeedTestResult { speed: 84.72 KB/s; elapsed: 963.802449ms; connection_time: 1.61735206s } -> https://gr-mirror.chaotic.cx/
+#  11. SpeedTestResult { speed: 81.92 KB/s; elapsed: 990.956583ms; connection_time: 973.465831ms } -> https://in-4-mirror.chaotic.cx/
+# FINISHED AT: 2025-02-07 22:40:43.473855214 +02:00
+Server = https://cdn-mirror.chaotic.cx/$repo/$arch
+Server = https://de-2-mirror.chaotic.cx/$repo/$arch
+Server = https://fr-mirror.chaotic.cx/$repo/$arch
+Server = https://es-mirror.chaotic.cx/$repo/$arch
+Server = https://us-ut-mirror.chaotic.cx/$repo/$arch
+Server = https://geo-mirror.chaotic.cx/$repo/$arch
+Server = https://cl-mirror.chaotic.cx/$repo/$arch
+Server = https://us-mi-mirror.chaotic.cx/$repo/$arch
+Server = https://in-mirror.chaotic.cx/$repo/$arch
+Server = https://gr-mirror.chaotic.cx/$repo/$arch
+Server = https://in-4-mirror.chaotic.cx/$repo/$arch
