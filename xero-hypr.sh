@@ -138,6 +138,7 @@ fi
   if [ "$response" -eq 0 ]; then
     echo "Applying ML4W dot files..."
     bash <(curl -s https://raw.githubusercontent.com/mylinuxforwork/dotfiles/main/setup-arch.sh)
+    install_packages "nwg-displays"
   else
     echo "Skipping ML4W dot files setup."
   fi
