@@ -28,7 +28,7 @@ verify_arch_linux() {
 
 # Function to display a dialog and handle user response
 show_dialog() {
-    dialog --title "Hyprland Compatibility Check" --colors --yesno "$1 Doing so will add the \Zb\Z1XeroLinux\Zn and \Zb\Z6Chaotic-AUR\Zn repos.\n\n\Zb\Z6Proceed at your OWN RISK!.\Zn" 0 0
+    dialog --title "Hyprland Compatibility Check" --colors --yesno "$1 Doing so will add the \Zb\Z1XeroLinux\Zn and \Zb\Z6Chaotic-AUR\Zn repos. Should you proceed, make sure to select 'yay' as the AUR helper when asked for everything to work properly.\n\n\Zb\Z6Proceed at your OWN RISK!.\Zn" 0 0
     response=$?
     if [ $response -eq 0 ]; then
         echo
