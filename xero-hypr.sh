@@ -8,27 +8,21 @@ set -euo pipefail
 # To be used in Arch-Chroot (After installing Base packages via ArchInstall)
 ##################################################################################################################
 
-# Function to install required packages
-install_required_packages() {
-    for cmd in dialog gum wget; do
-        if ! command -v "$cmd" &> /dev/null; then
-            echo "$cmd is not installed. Installing..."
-            sudo pacman -Syy --noconfirm "$cmd"
-        fi
-    done
-}
+# Check if dialog, gum, and wget are installed, and install them together if missing
+if ! command -v dialog &> /dev/null || ! command -v gum &> /dev/null || ! command -v wget &> /dev/null; then
+    echo "dialog, gum, or wget are not installed. Installing all at once..."
+    sudo pacman -Syy --noconfirm dialog gum wget
+fi
 
-# Function to verify Arch Linux environment
-verify_arch_linux() {
-    if ! grep -iq "^ID=arch" /etc/os-release; then
-        dialog --title "Unsupported OS" --colors --msgbox "\nThis script requires \Zb\Z1Vanilla Arch Linux\Zn.\nExiting..." 0 0
-        exit 1
-    fi
-}
+# Verify Arch Linux environment
+if ! grep -iq "^ID=arch" /etc/os-release; then
+    dialog --title "Unsupported OS" --colors --msgbox "\nThis script requires \Zb\Z1Vanilla Arch Linux\Zn.\nExiting..." 0 0
+    exit 1
+fi
 
 # Function to display a dialog and handle user response
 show_dialog() {
-    dialog --title "Hyprland Compatibility Check" --colors --yesno "$1 Doing so will add the \Zb\Z1XeroLinux\Zn and \Zb\Z6Chaotic-AUR\Zn repos. Should you agree, make sure to select 'yay' as the AUR helper when asked for everything to work properly.\n\n\Zb\Z6Proceed at your OWN RISK!.\Zn" 0 0
+    dialog --title "Hyprland Compatibility Check" --colors --yesno "$1 Doing so will add the \Zb\Z1XeroLinux\Zn and \Zb\Z6Chaotic-AUR\Zn repos. Make sure to select 'yay' as the AUR helper when asked for everything to work properly.\n\n\Zb\Z6Proceed at your OWN RISK!.\Zn" 0 0
     response=$?
     if [ $response -eq 0 ]; then
         echo
@@ -81,38 +75,26 @@ check_gpu_compatibility() {
 # Function to install packages
 install_packages() {
     packages=$1
-    if sudo pacman -S --needed --noconfirm $packages; then
-        echo "Packages installed successfully."
-    else
-        echo "Error installing packages."
-        exit 1
-    fi
+    sudo pacman -S --needed --noconfirm $packages || { echo "Error installing packages: $packages"; exit 1; }
 }
 
 # Main script execution
-install_required_packages
-verify_arch_linux
-
 check_gpu_compatibility
 
-# Download and run the xapi script
-curl -fsSL https://xerolinux.xyz/script/xapi.sh -o /tmp/xapi.sh
-bash /tmp/xapi.sh
+# Download and run the xapi script securely
+curl -fsSL https://xerolinux.xyz/script/xapi.sh -o /tmp/xapi.sh && bash /tmp/xapi.sh
 
-# Install Hyprland and dependencies
+# Install Hyprland and dependencies together using a single pacman command.
 clear && install_packages "hyprland hypridle hyprland-protocols hyprlock hyprpaper hyprpicker hyprpolkitagent hyprsunset linux-headers pacman-contrib xdg-desktop-portal-hyprland xdg-user-dirs power-profiles-daemon"
 
-# Enable services after package installation
+# Enable services after package installation.
 xdg-user-dirs-update && sudo systemctl enable power-profiles-daemon.service
-echo
+
 echo "Installing Bluetooth packages..."
-echo
 install_packages "bluez bluez-utils bluez-plugins bluez-hid2hci bluez-cups bluez-libs bluez-tools"
 sudo systemctl enable bluetooth.service
 
-echo
 echo "Installing other useful applications..."
-echo
 install_packages "downgrade update-grub meld timeshift mpv gnome-disk-utility btop nano git rustup eza ntp most wget dnsutils logrotate gtk-update-icon-cache dex bash-completion bat bat-extras ttf-fira-code otf-libertinus tex-gyre-fonts ttf-hack-nerd ttf-ubuntu-font-family awesome-terminal-fonts ttf-jetbrains-mono-nerd adobe-source-sans-pro-fonts gtk-engines gtk-engine-murrine gnome-themes-extra ntfs-3g gvfs mtpfs udiskie udisks2 ldmtool gvfs-afc gvfs-mtp gvfs-nfs gvfs-smb gvfs-gphoto2 libgsf tumbler freetype2 libopenraw ffmpegthumbnailer python-pip python-cffi python-numpy python-docopt python-pyaudio python-pyparted python-pygments python-websockets ocs-url xmlstarlet yt-dlp wavpack unarchiver gnustep-base parallel systemdgenie gnome-keyring ark vi duf gcc yad zip xdo lzop nmon tree vala htop lshw cmake cblas expac fuse3 lhasa meson unace unrar unzip p7zip rhash sshfs vnstat nodejs cronie hwinfo arandr assimp netpbm wmctrl grsync libmtp polkit sysprof semver zenity gparted hddtemp mlocate jsoncpp fuseiso gettext node-gyp intltool graphviz pkgstats inetutils s3fs-fuse playerctl oniguruma cifs-utils lsb-release dbus-python laptop-detect perl-xml-parser appmenu-gtk-module"
 
 # Check if GRUB is installed
@@ -124,22 +106,21 @@ if command -v grub-mkconfig &> /dev/null; then
 
     # Enable OS Prober in GRUB configuration
     if [ -f "/etc/default/grub" ]; then
-        sudo sed -i 's/#\s*GRUB_DISABLE_OS_PROBER=false/GRUB_DISABLE_OS_PROBER=false/' '/etc/default/grub'
+        sudo sed -i 's/#GRUB_DISABLE_OS_PROBER=false/GRUB_DISABLE_OS_PROBER=false/' '/etc/default/grub'
     fi
 
     # Run os-prober and update GRUB configuration
-    sudo os-prober
-    sudo grub-mkconfig -o /boot/grub/grub.cfg
+    sudo os-prober && sudo grub-mkconfig -o /boot/grub/grub.cfg || { echo "Error updating GRUB configuration."; exit 1; }
 else
-    echo "GRUB is not installed. Skipping OS-Prober support addition."
+    echo "GRUB is not installed. Skipping OS-Prober setup."
 fi
 
-# Prompt user for input
+# Prompt user for ML4W dot files setup
 dialog --title "ML4W Dot Files" --colors --yesno "\nDo you want to apply \Zb\Z1ML4W\Zn dot files? Selecting 'Yes' will execute the Setup script from source. Selecting 'No' will result in a bone stock install.\n\nHit Yes or No to continue." 0 0
-  
+
 # Capture the exit status of dialog (0 for Yes, 1 for No)
 response=$?
-  
+
 if [ "$response" -eq 0 ]; then
     echo "Applying ML4W dot files..."
     curl -s https://raw.githubusercontent.com/mylinuxforwork/dotfiles/main/setup-arch.sh -o /tmp/setup-arch.sh
@@ -153,5 +134,5 @@ dialog --title "Installation Complete" --msgbox "\nInstallation Complete. Now ex
 
 # Exit chroot and reboot
 clear
-echo "Type exit to exit chroot environment and reboot system..."
+echo "Type exit to leave chroot environment and reboot system..."
 sleep 3
