@@ -92,12 +92,12 @@ install_packages() {
 clear && install_packages "hyprland hypridle hyprland-protocols hyprlock hyprpaper hyprpicker hyprpolkitagent hyprsunset linux-headers pacman-contrib xdg-desktop-portal-hyprland xdg-user-dirs power-profiles-daemon"
 
 # Enable services after package installation
-xdg-user-dirs-update && systemctl enable power-profiles-daemon.service
+xdg-user-dirs-update && sudo systemctl enable power-profiles-daemon.service
 echo
 echo "Installing Bluetooth packages..."
 echo
 install_packages "bluez bluez-utils bluez-plugins bluez-hid2hci bluez-cups bluez-libs bluez-tools"
-systemctl enable bluetooth.service
+sudo systemctl enable bluetooth.service
 
 echo
 echo "Installing other useful applications..."
