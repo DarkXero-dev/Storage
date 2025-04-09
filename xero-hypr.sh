@@ -108,78 +108,7 @@ echo
 echo "Installing Bluetooth packages..."
 echo
 install_packages "bluez bluez-utils bluez-plugins bluez-hid2hci bluez-cups bluez-libs bluez-tools"
-sudo systemctl enable bluetooth.service#!/usr/bin/env bash
-
-##################################################################################################################
-# Author : DarkXero
-# Website : https://xerolinux.xyz
-# To be used in Arch-Chroot (After installing Base packages via ArchInstall)
-##################################################################################################################
-
-# Check if dialog is installed, if not, install it
-if ! command -v dialog gum wget &> /dev/null; then
-  echo
-  echo "dialog gum wget are not installed. Installing..."
-  sudo pacman -Syy --noconfirm dialog gum wget
-fi
-
-# Check if the script is running on Arch Linux
- if ! grep -q "Arch Linux" /etc/os-release; then
-   dialog --title "!! Unknown/Custom Distro !!" --colors --msgbox "\nThis script must be run on \Zb\Z1Vanilla Arch\Zn. Running it on any other Distro, even \Zb\Z6Arch-Spins\Zn might cause issues.\n\nHit OK to exit." 10 0
-   exit 1
- fi
-
-# Function to display a dialog and handle user response
-show_dialog() {
-    dialog --title "Hyprland Compatibility Check" --colors --yesno "$1 Doing so will add the \Zb\Z1XeroLinux\Zn and \Zb\Z6Chaotic-AUR\Zn repos.\n\n\Zb\Z6Proceed at your OWN RISK!.\Zn" 13 69
-    response=$?
-    if [ $response -eq 0 ]; then
-        echo
-        clear && echo "Proceeding with the installation..."
-        sleep 3
-        return 0
-    else
-        echo
-        clear && echo "Canceling the installation..."
-        echo
-        sleep 3
-        exit 1
-    fi
-}
-
-# Function to determine GPU compatibility for Wayland
-check_gpu_compatibility() {
-    if command -v lspci &> /dev/null; then
-        GPU_INFO=$(lspci | grep -E "VGA|3D")
-
-        if echo "$GPU_INFO" | grep -qi "NVIDIA"; then
-            # Check for NVIDIA GPU compatibility (900 series and up)
-            if echo "$GPU_INFO" | grep -Eqi "GTX (9[0-9]{2}|[1-9][0-9]{3})|RTX|Titan|A[0-9]{2,3}"; then
-                show_dialog "\n\nYour \Zb\Z6nVidia\Zn GPU should support \Zb\Z1Hyprland WM\Zn, do you want to proceed?"
-            else
-                show_dialog "\n\nOlder \Zb\Z6nVidia\Zn GPU detected. Only 900 series and later support \Zb\Z1Hyprland WM\Zn."
-            fi
-        elif echo "$GPU_INFO" | grep -qi "Intel"; then
-            # Check for Intel GPU compatibility (HD Graphics 4000 series and newer)
-            if echo "$GPU_INFO" | grep -Eqi "HD Graphics ([4-9][0-9]{2,3}|[1-9][0-9]{4,})|Iris|Xe"; then
-                show_dialog "\n\nYour \Zb\Z6Intel\Zn GPU should support \Zb\Z1Hyprland WM\Zn, do you want to proceed?"
-            else
-                show_dialog "\n\nOlder \Zb\Z6Intel\Zn GPU detected. Only HD Graphics 4000 series and newer support \Zb\Z1Hyprland WM\Zn."
-            fi
-        elif echo "$GPU_INFO" | grep -qi "AMD"; then
-            # Check for AMD GPU compatibility (RX 480 and newer)
-            if echo "$GPU_INFO" | grep -Eqi "RX (4[8-9][0-9]|[5-9][0-9]{2,3})|VEGA|RDNA|RADEON PRO"; then
-                show_dialog "\n\nYour \Zb\Z6AMD\Zn GPU should support \Zb\Z1Hyprland WM\Zn, do you want to proceed?"
-            else
-                show_dialog "\n\nOlder \Zb\Z6AMD\Zn GPU detected. Only RX 480 and newer support \Zb\Z1Hyprland WM\Zn."
-            fi
-        else
-            show_dialog "\n\nUnknown or unsupported GPU detected. \Zb\Z1Hyprland WM\Zn compatibility is uncertain, do you want to proceed anyway?"
-        fi
-    else
-        show_dialog "Cannot detect GPU. 'lspci' command not found."
-    fi
-
+sudo systemctl enable bluetooth.service
 
 echo
 echo "Installing other useful applications..."
