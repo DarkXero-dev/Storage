@@ -21,10 +21,10 @@ fi
  fi
 
 # Check if dialog is installed, if not, install it
-if ! command -v dialog &> /dev/null; then
+if ! command -v dialog gum wget &> /dev/null; then
   echo
-  echo "dialog is not installed. Installing dialog..."
-  pacman -Syy --noconfirm dialog
+  echo "dialog gum wget are not installed. Installing..."
+  pacman -Syy --noconfirm dialog gum wget
 fi
 
 # Function to display a dialog and handle user response
