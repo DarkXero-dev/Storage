@@ -130,6 +130,33 @@ else
     echo "Skipping ML4W dot files setup."
 fi
 
+# Detect if running in a VM and install guest tools
+echo
+echo "Detecting if you are using a VM"
+result=$(systemd-detect-virt)
+case $result in
+  oracle)
+    echo "Installing Virtualbox Guest tools..."
+    echo
+    sudo pacman -S --noconfirm --needed virtualbox-guest-utils && reboot
+    ;;
+  kvm)
+    echo "Installing QEmu Guest tools..."
+    echo
+    sudo pacman -S --noconfirm --needed qemu-guest-agent spice-vdagent && reboot
+    ;;
+  vmware)
+    echo "Installing VMWare Guest Tools..."
+    echo
+    sudo pacman -S --noconfirm --needed xf86-video-vmware open-vm-tools xf86-input-vmmouse
+    sudo systemctl enable --now vmtoolsd.service && reboot
+    ;;
+  *)
+    echo "You are not running in a VM."
+    ;;
+esac
+sleep 2
+
 dialog --title "Installation Complete" --msgbox "\nInstallation Complete. Now exit and reboot.\n\nFor further customization, please find our Toolkit in AppMenu under System or by typing xero-cli in terminal." 0 0
 
 # Exit chroot and reboot
