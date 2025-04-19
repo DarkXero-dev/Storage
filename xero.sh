@@ -81,6 +81,11 @@ start_point() {
   bash /tmp/xapi.sh
 }
 
+install_packages() {
+  echo -e "${CYAN}Installing packages: $*${RESET}"
+  sudo pacman -S --noconfirm --needed "$@"
+}
+
 install_plasma() {
   print_section "Installing Plasma"
   start_point
