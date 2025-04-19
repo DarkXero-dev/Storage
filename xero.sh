@@ -339,10 +339,11 @@ main() {
   if ! command -v figlet &>/dev/null; then
   echo -e "${YELLOW}Installing 'figlet' for banner display...${RESET}"
   sudo pacman -S --noconfirm --needed figlet &>/dev/null && \
+    echo
     echo -e "${GREEN}[✔] figlet installed.${RESET}" || \
     echo -e "${RED}[✘] Failed to install figlet.${RESET}"
 fi
-
+  echo
   main_menu
   post_install
   echo -e "${GREEN}✔ Done! You may now reboot into your desktop environment.${RESET}"
