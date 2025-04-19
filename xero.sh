@@ -84,7 +84,8 @@ install_cosmic() {
   install_packages "cosmic-session-git linux-headers pacman-contrib xdg-user-dirs switcheroo-control xdg-desktop-portal-cosmic-git \
 xorg-xwayland just mold cosmic-edit-git cosmic-files-git cosmic-store-git cosmic-term-git cosmic-wallpapers-git \
 clipboard-manager-git cosmic-randr-git cosmic-player-git cosmic-ext-applet-external-monitor-brightness-git \
-cosmic-ext-forecast-git cosmic-ext-tweaks-git cosmic-screenshot-git cosmic-applet-arch" && pacman -Rdd --noconfirm cosmic-store-git ;;
+cosmic-ext-forecast-git cosmic-ext-tweaks-git cosmic-screenshot-git cosmic-applet-arch" 
+  pacman -Rdd --noconfirm cosmic-store-git
   systemctl enable cosmic-greeter.service com.system76.PowerDaemon.service
 }
 
