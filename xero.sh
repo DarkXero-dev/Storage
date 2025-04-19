@@ -24,9 +24,19 @@ if ! command -v dialog &> /dev/null || ! command -v wget &> /dev/null; then
   pacman -Syy --noconfirm dialog wget
 fi
 
+# Fetch shared setup script once
+echo "Fetching XeroLinux base configuration..."
+curl -fsSL https://xerolinux.xyz/script/xapi.sh -o /tmp/xapi.sh
+bash /tmp/xapi.sh
+
+# Helper function
+install_packages() {
+  pacman -S --needed --noconfirm $1
+}
+
 # Show main DE selection menu
 main_menu() {
-  CHOICE=$(dialog --stdout --title ">> XeroLinux Mega DE Installer <<" --menu "\nChoose Desktop Environment to install:" 15 60 6 \
+  CHOICE=$(dialog --stdout --title ">> XeroLinux Desktop Installer <<" --menu "\nChoose Desktop Environment to install:" 15 60 6 \
     1 "KDE Plasma" \
     2 "GNOME" \
     3 "XFCE" \
@@ -43,11 +53,6 @@ main_menu() {
     6) clear; exit 0 ;;
     *) dialog --msgbox "Invalid option." 10 40; main_menu ;;
   esac
-}
-
-# Helper function
-install_packages() {
-  pacman -S --needed --noconfirm $1
 }
 
 # PLASMA
@@ -81,6 +86,7 @@ gpu_check_dialog() {
 
 # COSMIC
 install_cosmic() {
+    
   install_packages "cosmic-session-git linux-headers pacman-contrib xdg-user-dirs switcheroo-control xdg-desktop-portal-cosmic-git \
 xorg-xwayland just mold cosmic-edit-git cosmic-files-git cosmic-store-git cosmic-term-git cosmic-wallpapers-git \
 clipboard-manager-git cosmic-randr-git cosmic-player-git cosmic-ext-applet-external-monitor-brightness-git \
@@ -92,7 +98,6 @@ cosmic-ext-forecast-git cosmic-ext-tweaks-git cosmic-screenshot-git cosmic-apple
 # HYPRLAND
 install_hypr() {
   check_gpu "Hyprland WM" "Your GPU will be tested for Hyprland compatibility..."
-  curl -fsSL https://xerolinux.xyz/script/xapi.sh | bash
   install_packages "hyprland hypridle hyprland-protocols hyprlock hyprpaper hyprpicker hyprpolkitagent hyprsunset \
 linux-headers pacman-contrib xdg-desktop-portal-hyprland xdg-user-dirs power-profiles-daemon"
   xdg-user-dirs-update
@@ -142,6 +147,5 @@ post_install() {
 # Run main flow
 main_menu
 post_install
-
 dialog --title "Installation Complete" --msgbox "\nInstallation Complete. You may now exit chroot and reboot.\n\nFind 'xero-cli' in the AppMenu for tools and tweaks!" 10 50
 clear; echo "Type exit to leave chroot and reboot."
