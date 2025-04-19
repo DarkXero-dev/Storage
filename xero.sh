@@ -27,11 +27,11 @@ fi
 # Show main DE selection menu
 main_menu() {
   CHOICE=$(dialog --stdout --title ">> XeroLinux Mega Installer <<" --menu "\nChoose Desktop Environment to install:" 15 60 6 \
-    1 "Plasma Desktop" \
-    2 "GNOME Desktop" \
-    3 "XFCE Desktop" \
-    4 "Hyprland WM" \
-    5 "Cosmic (Alpha) Desktop"
+    1 "KDE Plasma" \
+    2 "GNOME" \
+    3 "XFCE" \
+    4 "Hyprland" \
+    5 "Cosmic Alpha"
     6 "Exit")
 
   case "$CHOICE" in
