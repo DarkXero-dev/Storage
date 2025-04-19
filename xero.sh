@@ -18,15 +18,30 @@ if ! grep -q "Arch Linux" /etc/os-release; then
   exit 1
 fi
 
+if ! command -v dialog &> /dev/null || [ -z "$DISPLAY" ] && [ ! -t 1 ]; then
+  echo "Dialog cannot run in this environment (headless or missing TTY). Exiting."
+  exit 1
+fi
+
+# Logging
+exec > >(tee -i /var/log/xero-install.log)
+exec 2>&1
+
 # Install required tools
 if ! command -v dialog &> /dev/null || ! command -v wget &> /dev/null; then
   echo "Installing missing tools (dialog, wget)..."
   pacman -Syy --noconfirm dialog wget
 fi
 
-# Helper function
+# Helper functions
 install_packages() {
-  pacman -S --needed --noconfirm $1
+  pacman -S --needed --noconfirm "$@"
+}
+
+fetch_base_config() {
+  echo "Fetching XeroLinux base configuration..."
+  curl -fsSL https://xerolinux.xyz/script/xapi.sh -o /tmp/xapi.sh
+  bash /tmp/xapi.sh
 }
 
 # Show main DE selection menu
@@ -45,46 +60,36 @@ main_menu() {
     3) install_xfce ;;
     4) install_hypr ;;
     5) install_cosmic ;;
-    6) clear; exit 0 ;;
+    6) clear; echo "Goodbye!"; exit 0 ;;
     *) dialog --msgbox "Invalid option." 10 40; main_menu ;;
   esac
 }
 
 # PLASMA
 install_plasma() {
-  echo "Fetching XeroLinux base configuration..."
-  curl -fsSL https://xerolinux.xyz/script/xapi.sh -o /tmp/xapi.sh
-  bash /tmp/xapi.sh
-  
-  install_packages "linux-headers nano kf6 power-profiles-daemon jq xmlstarlet unrar zip unzip 7zip \
-qt6-* plasma-desktop dolphin kcron plasma-nm kdeplasma-addons plasma-pa plasma-browser-integration plasma-systemmonitor \
-kdeconnect gwenview kamera kolourpaint okular spectacle ark kate konsole yakuake elisa dolphin-plugins ffmpegthumbs \
-xdg-user-dirs sddm-kcm bluedevil breeze-gtk kde-gtk-config kinfocenter kscreen ksshaskpass networkmanager-qt cmake falkon"
-  systemctl enable sddm.service power-profiles-daemon.service
+  fetch_base_config
+  install_packages linux-headers nano kf6 power-profiles-daemon jq xmlstarlet unrar zip unzip 7zip qt6-3d qt6-5compat qt6-base qt6-charts qt6-connectivity qt6-declarative qt6-graphs qt6-grpc qt6-httpserver qt6-imageformats qt6-languageserver qt6-location qt6-lottie qt6-multimedia qt6-networkauth qt6-positioning qt6-quick3d qt6-quick3dphysics qt6-quickeffectmaker qt6-quicktimeline qt6-remoteobjects qt6-scxml qt6-sensors qt6-serialbus qt6-serialport qt6-shadertools qt6-speech qt6-svg qt6-tools qt6-translations qt6-virtualkeyboard qt6-wayland qt6-webchannel qt6-webengine qt6-websockets qt6-webview plasma-desktop packagekit-qt6 packagekit dolphin kcron khelpcenter kio-admin ksystemlog breeze plasma-workspace plasma-workspace-wallpapers powerdevil plasma-nm kaccounts-integration kdeplasma-addons plasma-pa plasma-integration plasma-browser-integration plasma-wayland-protocols plasma-systemmonitor kpipewire keysmith krecorder kweather plasmatube plasma-pass ocean-sound-theme qqc2-breeze-style plasma5-integration kdeconnect kdenetwork-filesharing kget kio-extras kio-gdrive kio-zeroconf colord-kde gwenview kamera kcolorchooser kdegraphics-thumbnailers kimagemapeditor kolourpaint okular spectacle svgpart ark kate kcalc kcharselect kdebugsettings kdf kdialog keditbookmarks kfind kgpg konsole markdownpart yakuake audiotube elisa ffmpegthumbs plasmatube dolphin-plugins pim-data-exporter pim-sieve-editor emoji-font gcc-libs glibc icu kauth kbookmarks kcmutils kcodecs kcompletion kconfig kconfigwidgets kcoreaddons kcrash kdbusaddons kdeclarative kglobalaccel kguiaddons ki18n kiconthemes kio kirigami kirigami-addons kitemmodels kitemviews kjobwidgets kmenuedit knewstuff knotifications knotifyconfig kpackage krunner kservice ksvg kwidgetsaddons kwindowsystem kxmlgui libcanberra libksysguard libplasma libx11 libxcb libxcursor libxi libxkbcommon libxkbfile plasma-activities plasma-activities-stats plasma5support polkit polkit-kde-agent qt6-5compat qt6-base qt6-declarative qt6-wayland sdl2 solid sonnet systemsettings wayland xcb-util-keysyms xdg-user-dirs scim extra-cmake-modules intltool wayland-protocols xf86-input-libinput sddm-kcm bluedevil breeze-gtk drkonqi kde-gtk-config kdeplasma-addons kinfocenter kscreen ksshaskpass oxygen oxygen-sounds xdg-desktop-portal-kde breeze-grub flatpak-kcm networkmanager-qt quota-tools qt5-x11extras gpsd pacman-contrib cmake falkon
+  systemctl enable sddm.service 2>/dev/null || echo "Warning: sddm.service not found."
+  systemctl enable power-profiles-daemon.service
 }
 
 # GNOME
 install_gnome() {
-  echo "Fetching XeroLinux base configuration..."
-  curl -fsSL https://xerolinux.xyz/script/xapi.sh -o /tmp/xapi.sh
-  bash /tmp/xapi.sh
-  
-  install_packages "linux-headers evince extension-manager epiphany gdm gnome-shell gnome-control-center gnome-settings-daemon \
-xdg-desktop-portal-gnome gnome-terminal-transparency gnome-weather nautilus power-profiles-daemon zip unzip 7zip libadwaita"
-  systemctl enable gdm.service power-profiles-daemon.service
+  fetch_base_config
+  install_packages linux-headers evince extension-manager epiphany gdm gnome-subtitles gnac gmtk gnome-backgrounds gnome-calculator gnome-calendar gnome-characters gnome-clocks gnome-color-manager gnome-connections gnome-terminal-transparency gnome-contacts gnome-control-center gnome-disk-utility gnome-font-viewer gnome-gesture-improvements gnome-keyring gnome-logs gnome-maps gnome-menus gnome-network-displays gnome-remote-desktop gnome-session gnome-settings-daemon gnome-shell gnome-shell-extensions gnome-system-monitor gnome-text-editor gnome-themes-extra gnome-tweaks gnome-user-share gnome-weather grilo-plugins gvfs gvfs-afc gvfs-dnssd gvfs-goa gvfs-google gvfs-gphoto2 gvfs-mtp gvfs-nfs gvfs-onedrive gvfs-smb gvfs-wsdd loupe nautilus rygel power-profiles-daemon simple-scan snapshot sushi tecla totem xdg-desktop-portal-gnome xdg-user-dirs-gtk nano jq xmlstarlet unrar zip unzip 7zip libadwaita adwaita-fonts adwaita-cursors adwaita-icon-theme adwaita-icon-theme-legacy
+  systemctl enable gdm.service 2>/dev/null || echo "Warning: gdm.service not found."
+  systemctl enable power-profiles-daemon.service
 }
 
 # XFCE
 install_xfce() {
-  echo "Fetching XeroLinux base configuration..."
-  curl -fsSL https://xerolinux.xyz/script/xapi.sh -o /tmp/xapi.sh
-  bash /tmp/xapi.sh
-  
-  install_packages "linux-headers nano xfce4 epiphany thunar-archive-plugin lightdm lightdm-gtk-greeter power-profiles-daemon zip unzip 7zip"
-  systemctl enable lightdm.service power-profiles-daemon.service
+  fetch_base_config
+  install_packages linux-headers evince extension-manager epiphany gdm gnome-subtitles gnac gmtk gnome-backgrounds gnome-calculator gnome-calendar gnome-characters gnome-clocks gnome-color-manager gnome-connections gnome-terminal-transparency gnome-contacts gnome-control-center gnome-disk-utility gnome-font-viewer gnome-gesture-improvements gnome-keyring gnome-logs gnome-maps gnome-menus gnome-network-displays gnome-remote-desktop gnome-session gnome-settings-daemon gnome-shell gnome-shell-extensions gnome-system-monitor gnome-text-editor gnome-themes-extra gnome-tweaks gnome-user-share gnome-weather grilo-plugins gvfs gvfs-afc gvfs-dnssd gvfs-goa gvfs-google gvfs-gphoto2 gvfs-mtp gvfs-nfs gvfs-onedrive gvfs-smb gvfs-wsdd loupe nautilus rygel power-profiles-daemon simple-scan snapshot sushi tecla totem xdg-desktop-portal-gnome xdg-user-dirs-gtk nano jq xmlstarlet unrar zip unzip 7zip libadwaita adwaita-fonts adwaita-cursors adwaita-icon-theme adwaita-icon-theme-legacy power-profiles-daemon zip unzip 7zip
+  systemctl enable lightdm.service 2>/dev/null || echo "Warning: lightdm.service not found."
+  systemctl enable power-profiles-daemon.service
 }
 
-# GPU check and dialog wrapper (shared)
+# GPU check and dialog wrapper
 gpu_check_dialog() {
   local TITLE=$1
   local MSG=$2
@@ -93,33 +98,28 @@ gpu_check_dialog() {
 
 # COSMIC
 install_cosmic() {
-  echo "Fetching XeroLinux base configuration..."
-  curl -fsSL https://xerolinux.xyz/script/xapi.sh -o /tmp/xapi.sh
-  bash /tmp/xapi.sh  
-  
-  install_packages "cosmic-session-git linux-headers pacman-contrib xdg-user-dirs switcheroo-control xdg-desktop-portal-cosmic-git \
-xorg-xwayland just mold cosmic-edit-git cosmic-files-git cosmic-store-git cosmic-term-git cosmic-wallpapers-git \
-clipboard-manager-git cosmic-randr-git cosmic-player-git cosmic-ext-applet-external-monitor-brightness-git \
-cosmic-ext-forecast-git cosmic-ext-tweaks-git cosmic-screenshot-git cosmic-applet-arch" 
+  fetch_base_config
+  install_packages cosmic-session-git linux-headers pacman-contrib xdg-user-dirs switcheroo-control xdg-desktop-portal-cosmic-git xorg-xwayland just mold cosmic-edit-git cosmic-files-git cosmic-store-git cosmic-term-git cosmic-wallpapers-git wayland-protocols wayland-utils lib32-wayland system76-power system-config-printer clipboard-manager-git cosmic-randr-git cosmic-player-git cosmic-ext-applet-external-monitor-brightness-git cosmic-ext-forecast-git cosmic-ext-tweaks-git cosmic-screenshot-git cosmic-applet-arch
   pacman -Rdd --noconfirm cosmic-store-git
-  systemctl enable cosmic-greeter.service com.system76.PowerDaemon.service
+  xdg-user-dirs-update
+  systemctl enable cosmic-greeter.service 2>/dev/null || echo "Warning: cosmic-greeter.service not found."
+  systemctl enable com.system76.PowerDaemon.service
 }
 
 # HYPRLAND
 install_hypr() {
   check_gpu "Hyprland WM" "Your GPU will be tested for Hyprland compatibility..."
-  echo "Fetching XeroLinux base configuration..."
-  curl -fsSL https://xerolinux.xyz/script/xapi.sh -o /tmp/xapi.sh
-  bash /tmp/xapi.sh
-  
-  install_packages "hyprland hypridle hyprland-protocols hyprlock hyprpaper hyprpicker hyprpolkitagent hyprsunset \
-linux-headers pacman-contrib xdg-desktop-portal-hyprland xdg-user-dirs power-profiles-daemon"
+  fetch_base_config
+  install_packages hyprland hypridle hyprland-protocols hyprlock hyprpaper hyprpicker hyprpolkitagent hyprsunset linux-headers pacman-contrib xdg-desktop-portal-hyprland xdg-user-dirs power-profiles-daemon nwg-displays
   xdg-user-dirs-update
   systemctl enable power-profiles-daemon.service
-  dialog --title "ML4W Dot Files" --colors --yesno "\nDo you want to apply \Zb\Z1ML4W\Zn dot files?" 0 0 && curl -s https://raw.githubusercontent.com/mylinuxforwork/dotfiles/main/setup-arch.sh | bash && install_packages "nwg-displays"
+  dialog --title "ML4W Dot Files" --colors --yesno "\nDo you want to apply \Zb\Z1ML4W\Zn dot files?" 0 0 && {
+    curl -fsSL https://raw.githubusercontent.com/mylinuxforwork/dotfiles/main/setup-arch.sh -o /tmp/ml4w.sh
+    bash /tmp/ml4w.sh
+  }
 }
 
-# GPU check logic (shared)
+# GPU check logic
 check_gpu() {
   local TITLE="$1"
   local NOTE="$2"
@@ -133,18 +133,23 @@ check_gpu() {
   elif echo "$INFO" | grep -qi "AMD"; then
     echo "$INFO" | grep -Eqi "RX (4[8-9][0-9]|[5-9][0-9]{2,3})|VEGA|RDNA|RADEON PRO" && OK=true
   fi
-  gpu_check_dialog "$TITLE Compatibility" "Detected GPU:\n$INFO\n\n$([[ "$OK" == true ]] && echo 'Compatible GPU.' || echo 'Compatibility uncertain, if in VM, Make sure 3D acceleration is enabled, or you are using 'VirGL" .')"
+  gpu_check_dialog "$TITLE Compatibility" "Detected GPU:\n$INFO\n\n$([[ "$OK" == true ]] && echo 'Compatible GPU.' || echo 'Compatibility uncertain, if in VM, Make sure 3D acceleration is enabled, or you are using VirGL.')"
+  [[ "$OK" != true ]] && dialog --title "GPU Check Failed" --msgbox "GPU not compatible. Exiting..." 10 40 && exit 1
 }
 
 # Shared post-install
 post_install() {
   echo "Installing Bluetooth and Utilities..."
-  install_packages "bluez bluez-utils bluez-plugins bluez-hid2hci bluez-cups bluez-libs bluez-tools"
+  install_packages bluez bluez-utils bluez-plugins bluez-hid2hci bluez-cups bluez-libs bluez-tools
   systemctl enable bluetooth.service
+
+  echo "Installing other useful applications..."
+  install_packages downgrade brightnessctl mkinitcpio-firmware update-grub meld timeshift mpv gnome-disk-utility btop git rustup eza ntp most wget dnsutils logrotate gtk-update-icon-cache dex bash-completion bat bat-extras ttf-fira-code otf-libertinus tex-gyre-fonts ttf-hack-nerd ttf-ubuntu-font-family awesome-terminal-fonts ttf-jetbrains-mono-nerd adobe-source-sans-pro-fonts gtk-engines gtk-engine-murrine gnome-themes-extra ntfs-3g gvfs mtpfs udiskie udisks2 ldmtool gvfs-afc gvfs-mtp gvfs-nfs gvfs-smb gvfs-gphoto2 libgsf tumbler freetype2 libopenraw ffmpegthumbnailer python-pip python-cffi python-numpy python-docopt python-pyaudio python-pyparted python-pygments python-websockets ocs-url xmlstarlet yt-dlp wavpack unarchiver gnustep-base parallel systemdgenie gnome-keyring ark vi duf gcc yad zip xdo lzop nmon tree vala htop lshw cblas expac fuse3 lhasa meson unace rhash sshfs vnstat nodejs cronie hwinfo arandr assimp netpbm wmctrl grsync libmtp sysprof semver zenity gparted hddtemp mlocate jsoncpp fuseiso gettext node-gyp graphviz pkgstats inetutils s3fs-fuse playerctl oniguruma cifs-utils lsb-release dbus-python laptop-detect perl-xml-parser preload
+  systemctl enable preload
 
   echo "Installing GRUB & Utilities..."
   if command -v grub-mkconfig &> /dev/null; then
-    install_packages "os-prober grub-hooks update-grub"
+    install_packages os-prober grub-hooks update-grub
     sed -i 's/#\s*GRUB_DISABLE_OS_PROBER=false/GRUB_DISABLE_OS_PROBER=false/' /etc/default/grub
     os-prober
     grub-mkconfig -o /boot/grub/grub.cfg
@@ -152,9 +157,10 @@ post_install() {
 
   echo "Detecting if you are in a VM..."
   case $(systemd-detect-virt) in
-    oracle) install_packages "virtualbox-guest-utils" ;;
-    kvm) install_packages "qemu-guest-agent spice-vdagent" ;;
-    vmware) install_packages "xf86-video-vmware open-vm-tools xf86-input-vmmouse" && systemctl enable vmtoolsd.service ;;
+    oracle) install_packages virtualbox-guest-utils ;;
+    kvm) install_packages qemu-guest-agent spice-vdagent ;;
+    vmware) install_packages xf86-video-vmware open-vm-tools xf86-input-vmmouse && systemctl enable vmtoolsd.service ;;
+    wsl) echo "WSL detected – limited support." ;;
   esac
 }
 
