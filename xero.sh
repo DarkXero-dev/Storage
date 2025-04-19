@@ -71,22 +71,56 @@ check_existing_de() {
 
 check_gpu_compatibility() {
   DE="$1"
+
   if [[ "$DE" == "hyprland" || "$DE" == "cosmic" ]]; then
-    echo -e "${BLUE}Checking GPU compatibility for $DE...${RESET}"
-    VIRT=$(systemd-detect-virt)
-    if [[ "$VIRT" != "none" ]]; then
-      echo -e "${YELLOW}Virtual machine detected: $VIRT${RESET}"
-      echo -e "${CYAN}Please ensure 3D acceleration is enabled. Real hardware is recommended.${RESET}"
+    local virt
+    virt=$(systemd-detect-virt)
+
+    if [[ "$virt" != "none" ]]; then
+      echo -e "${YELLOW}⚠️  We have detected you are running inside a VM."
+      echo -e "Installing necessary packages. Please ensure 3D acceleration is enabled,"
+      echo -e "or better yet, test on real hardware for the best experience.${RESET}"
+
+      case "$virt" in
+        oracle)
+          install_packages virtualbox-guest-utils
+          ;;
+        kvm)
+          install_packages qemu-guest-agent spice-vdagent
+          ;;
+        vmware)
+          install_packages xf86-video-vmware open-vm-tools xf86-input-vmmouse
+          systemctl enable vmtoolsd.service
+          ;;
+        microsoft)
+          echo -e "${YELLOW}⚠️ WSL detected — graphical DE support is limited.${RESET}"
+          ;;
+        *)
+          echo -e "${YELLOW}Unknown VM type: ${virt} — no specific guest additions applied.${RESET}"
+          ;;
+      esac
     else
-      echo -e "${GREEN}Running on real hardware — good to go!${RESET}"
+      echo -e "${GREEN}Detected: Real hardware — you're good to go.${RESET}"
     fi
   fi
 }
 
 start_point() {
+  if [[ -f /tmp/.xapi_lock ]]; then return; fi
+
   echo -e "${GREEN}Fetching XeroLinux Toolkit & AUR Helper...${RESET}"
-  curl -fsSL https://xerolinux.xyz/script/xapi.sh -o /tmp/xapi.sh
-  bash /tmp/xapi.sh < /dev/tty > /dev/tty 2>&1
+
+  curl -fsSL https://xerolinux.xyz/script/xapi.sh -o /tmp/xapi.sh || {
+    echo -e "${RED}❌ Failed to download xapi.sh. Exiting.${RESET}"
+    exit 1
+  }
+
+  chmod +x /tmp/xapi.sh
+
+  # Run script in interactive shell with clean stdin/stdout
+  bash -i /tmp/xapi.sh
+
+  touch /tmp/.xapi_lock
 }
 
 install_packages() {
@@ -225,7 +259,7 @@ install_cosmic() {
 }
 
 post_install() {
-  print_section "Post-Install Setup"
+  print_section "Extra Pkgs"
   echo "Installing Bluetooth and Utilities..."
   install_packages bluez bluez-utils bluez-plugins bluez-hid2hci bluez-cups bluez-libs bluez-tools
   sudo systemctl enable bluetooth.service
