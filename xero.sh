@@ -31,7 +31,7 @@ main_menu() {
     2 "GNOME Desktop" \
     3 "XFCE Desktop" \
     4 "Hyprland WM" \
-    5 "install_cosmic"
+    5 "Cosmic (Alpha) Desktop"
     6 "Exit")
 
   case "$CHOICE" in
