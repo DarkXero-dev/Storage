@@ -84,27 +84,9 @@ check_gpu_compatibility() {
 }
 
 start_point() {
-  if [[ -f /tmp/.xapi_done ]]; then
-    echo -e "${YELLOW}🛈 AUR helper already installed. Skipping xapi.sh...${RESET}"
-    return
-  fi
-
   echo -e "${GREEN}Fetching XeroLinux Toolkit & AUR Helper...${RESET}"
-
-  # Run in a subshell and monitor changes
-  BEFORE=$(pacman -Qq | wc -l)
-
-  bash -c 'curl -fsSL https://xerolinux.xyz/script/xapi.sh | bash'
-
-  AFTER=$(pacman -Qq | wc -l)
-
-  if [[ "$AFTER" -gt "$BEFORE" ]]; then
-    echo -e "${YELLOW}🔁 System changed by xapi.sh. Restarting script for a clean state.${RESET}"
-    touch /tmp/.xapi_done
-    exec "$0" "$@"
-  fi
-
-  touch /tmp/.xapi_done
+  curl -fsSL https://xerolinux.xyz/script/xapi.sh -o /tmp/xapi.sh
+  bash /tmp/xapi.sh < /dev/tty > /dev/tty 2>&1
 }
 
 install_packages() {
