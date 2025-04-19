@@ -70,16 +70,14 @@ check_existing_de() {
 }
 
 check_gpu_compatibility() {
-  DE="$1"
+  local DE="$1"
 
   if [[ "$DE" == "hyprland" || "$DE" == "cosmic" ]]; then
     local virt
     virt=$(systemd-detect-virt)
 
     if [[ "$virt" != "none" ]]; then
-      echo -e "${YELLOW}⚠️  We have detected you are running inside a VM."
-      echo -e "Installing necessary packages. Please ensure 3D acceleration is enabled,"
-      echo -e "or better yet, test on real hardware for the best experience.${RESET}"
+      echo -e "${YELLOW}⚠️  VM detected — enabling guest tools. Ensure 3D acceleration is enabled for best results.${RESET}"
 
       case "$virt" in
         oracle)
@@ -93,10 +91,10 @@ check_gpu_compatibility() {
           systemctl enable vmtoolsd.service
           ;;
         microsoft)
-          echo -e "${YELLOW}⚠️ WSL detected — graphical DE support is limited.${RESET}"
+          echo -e "${YELLOW}⚠️  WSL detected — GUI support is limited.${RESET}"
           ;;
         *)
-          echo -e "${YELLOW}Unknown VM type: ${virt} — no specific guest additions applied.${RESET}"
+          echo -e "${YELLOW}Unknown VM type: ${virt} — no specific guest tools applied.${RESET}"
           ;;
       esac
     else
@@ -259,11 +257,11 @@ install_cosmic() {
 }
 
 post_install() {
-  print_section "Extra Pkgs"
+  print_section "Post-Setup"
   echo "Installing Bluetooth and Utilities..."
   install_packages bluez bluez-utils bluez-plugins bluez-hid2hci bluez-cups bluez-libs bluez-tools
   sudo systemctl enable bluetooth.service
-
+  echo
   echo "Installing other useful applications..."
   install_packages downgrade brightnessctl mkinitcpio-firmware update-grub meld timeshift mpv \
   gnome-disk-utility btop git rustup eza ntp most wget dnsutils logrotate gtk-update-icon-cache dex \
@@ -278,15 +276,15 @@ post_install() {
   semver zenity gparted hddtemp mlocate jsoncpp fuseiso gettext node-gyp graphviz pkgstats inetutils \
   s3fs-fuse playerctl oniguruma cifs-utils lsb-release dbus-python laptop-detect perl-xml-parser preload
   sudo systemctl enable preload
-
+    echo
     echo "Installing GRUB & updating bootloader..."
   if command -v grub-mkconfig &> /dev/null; then
     install_packages os-prober grub-hooks update-grub
-    sed -i 's/#\s*GRUB_DISABLE_OS_PROBER=false/GRUB_DISABLE_OS_PROBER=false/' /etc/default/grub
-    os-prober
-    grub-mkconfig -o /boot/grub/grub.cfg
+    sudo sed -i 's/#\s*GRUB_DISABLE_OS_PROBER=false/GRUB_DISABLE_OS_PROBER=false/' /etc/default/grub
+    sudo os-prober
+    sudo grub-mkconfig -o /boot/grub/grub.cfg >/dev/null
   fi
-
+  echo
   echo "Detecting if you are in a VM..."
   case $(systemd-detect-virt) in
     oracle) install_packages virtualbox-guest-utils ;;
@@ -321,7 +319,6 @@ main_menu() {
     4)
       echo -e "${YELLOW}"
       figlet -f small "⚠ VM Warning"
-      echo -e "If you are running this in a VM, make sure 3D acceleration is enabled & supported.${RESET}"
       check_gpu_compatibility hyprland
       start_point
       install_hypr
@@ -329,14 +326,6 @@ main_menu() {
     5)
       echo -e "${YELLOW}"
       figlet -f small "⚠ VM Warning"
-      echo -e "If you are running this in a VM, make sure 3D acceleration is enabled & supported."
-      echo
-      echo -e "${RED}"
-      figlet -f small "❗ Alpha Warning"
-      echo -e "Cosmic Alpha is still in development."
-      echo -e "Do NOT install on a production machine."
-      echo -e "Install AT YOUR OWN RISK!"
-      echo -e "${RESET}"
       check_gpu_compatibility cosmic
       start_point
       install_cosmic
@@ -362,7 +351,9 @@ fi
   echo
   main_menu
   post_install
+  echo
   echo -e "${GREEN}✔ Done! You may now reboot into your desktop environment.${RESET}"
+  echo
   read -rp "Press Enter to reboot now or Ctrl+C to cancel..."
   reboot
 }
