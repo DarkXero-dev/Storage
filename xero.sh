@@ -82,8 +82,14 @@ start_point() {
 }
 
 install_packages() {
-  echo -e "${CYAN}Installing packages: $*${RESET}"
-  sudo pacman -S --noconfirm --needed "$@"
+  local total=$#
+  local count=1
+  for pkg in "$@"; do
+    echo -ne "${CYAN}[${count}/${total}] Installing ${pkg}...${RESET}\\r"
+    sudo pacman -S --noconfirm --needed "$pkg" &>/dev/null
+    echo -e "${GREEN}[${count}/${total}] Installed ${pkg}${RESET}"
+    ((count++))
+  done
 }
 
 install_plasma() {
