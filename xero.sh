@@ -24,11 +24,6 @@ if ! command -v dialog &> /dev/null || ! command -v wget &> /dev/null; then
   pacman -Syy --noconfirm dialog wget
 fi
 
-# Fetch shared setup script once
-echo "Fetching XeroLinux base configuration..."
-curl -fsSL https://xerolinux.xyz/script/xapi.sh -o /tmp/xapi.sh
-bash /tmp/xapi.sh
-
 # Helper function
 install_packages() {
   pacman -S --needed --noconfirm $1
@@ -57,6 +52,10 @@ main_menu() {
 
 # PLASMA
 install_plasma() {
+  echo "Fetching XeroLinux base configuration..."
+  curl -fsSL https://xerolinux.xyz/script/xapi.sh -o /tmp/xapi.sh
+  bash /tmp/xapi.sh
+  
   install_packages "linux-headers nano kf6 power-profiles-daemon jq xmlstarlet unrar zip unzip 7zip \
 qt6-* plasma-desktop dolphin kcron plasma-nm kdeplasma-addons plasma-pa plasma-browser-integration plasma-systemmonitor \
 kdeconnect gwenview kamera kolourpaint okular spectacle ark kate konsole yakuake elisa dolphin-plugins ffmpegthumbs \
@@ -66,6 +65,10 @@ xdg-user-dirs sddm-kcm bluedevil breeze-gtk kde-gtk-config kinfocenter kscreen k
 
 # GNOME
 install_gnome() {
+  echo "Fetching XeroLinux base configuration..."
+  curl -fsSL https://xerolinux.xyz/script/xapi.sh -o /tmp/xapi.sh
+  bash /tmp/xapi.sh
+  
   install_packages "linux-headers evince extension-manager epiphany gdm gnome-shell gnome-control-center gnome-settings-daemon \
 xdg-desktop-portal-gnome gnome-terminal-transparency gnome-weather nautilus power-profiles-daemon zip unzip 7zip libadwaita"
   systemctl enable gdm.service power-profiles-daemon.service
@@ -73,6 +76,10 @@ xdg-desktop-portal-gnome gnome-terminal-transparency gnome-weather nautilus powe
 
 # XFCE
 install_xfce() {
+  echo "Fetching XeroLinux base configuration..."
+  curl -fsSL https://xerolinux.xyz/script/xapi.sh -o /tmp/xapi.sh
+  bash /tmp/xapi.sh
+  
   install_packages "linux-headers nano xfce4 epiphany thunar-archive-plugin lightdm lightdm-gtk-greeter power-profiles-daemon zip unzip 7zip"
   systemctl enable lightdm.service power-profiles-daemon.service
 }
@@ -86,7 +93,10 @@ gpu_check_dialog() {
 
 # COSMIC
 install_cosmic() {
-    
+  echo "Fetching XeroLinux base configuration..."
+  curl -fsSL https://xerolinux.xyz/script/xapi.sh -o /tmp/xapi.sh
+  bash /tmp/xapi.sh  
+  
   install_packages "cosmic-session-git linux-headers pacman-contrib xdg-user-dirs switcheroo-control xdg-desktop-portal-cosmic-git \
 xorg-xwayland just mold cosmic-edit-git cosmic-files-git cosmic-store-git cosmic-term-git cosmic-wallpapers-git \
 clipboard-manager-git cosmic-randr-git cosmic-player-git cosmic-ext-applet-external-monitor-brightness-git \
@@ -98,6 +108,10 @@ cosmic-ext-forecast-git cosmic-ext-tweaks-git cosmic-screenshot-git cosmic-apple
 # HYPRLAND
 install_hypr() {
   check_gpu "Hyprland WM" "Your GPU will be tested for Hyprland compatibility..."
+  echo "Fetching XeroLinux base configuration..."
+  curl -fsSL https://xerolinux.xyz/script/xapi.sh -o /tmp/xapi.sh
+  bash /tmp/xapi.sh
+  
   install_packages "hyprland hypridle hyprland-protocols hyprlock hyprpaper hyprpicker hyprpolkitagent hyprsunset \
 linux-headers pacman-contrib xdg-desktop-portal-hyprland xdg-user-dirs power-profiles-daemon"
   xdg-user-dirs-update
@@ -119,7 +133,7 @@ check_gpu() {
   elif echo "$INFO" | grep -qi "AMD"; then
     echo "$INFO" | grep -Eqi "RX (4[8-9][0-9]|[5-9][0-9]{2,3})|VEGA|RDNA|RADEON PRO" && OK=true
   fi
-  gpu_check_dialog "$TITLE Compatibility" "Detected GPU:\n$INFO\n\n$([[ "$OK" == true ]] && echo 'Compatible GPU.' || echo 'Compatibility uncertain.')"
+  gpu_check_dialog "$TITLE Compatibility" "Detected GPU:\n$INFO\n\n$([[ "$OK" == true ]] && echo 'Compatible GPU.' || echo 'Compatibility uncertain, if in VM, Make sure 3D acceleration is enabled, or you are using 'VirGL" .')"
 }
 
 # Shared post-install
