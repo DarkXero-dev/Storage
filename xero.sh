@@ -84,12 +84,32 @@ start_point() {
 install_packages() {
   local total=$#
   local count=1
+  local spinner=("|" "/" "-" "\")
+
   for pkg in "$@"; do
-    echo -ne "${CYAN}[${count}/${total}] Installing ${pkg}...${RESET}\\r"
-    sudo pacman -S --noconfirm --needed "$pkg" &>/dev/null
-    echo -e "${GREEN}[${count}/${total}] Installed ${pkg}${RESET}"
+    local success=false
+    for i in {0..3}; do
+      echo -ne "${CYAN}[${spinner[i]}] Installing ${pkg}...
+${RESET}"
+      sleep 0.1
+    done
+
+    if sudo pacman -S --noconfirm --needed "$pkg" &>/dev/null; then
+      echo -e "[2K${GREEN}[✔] Installed ${pkg}${RESET}"
+    else
+      echo -e "[2K${RED}[✘] Failed ${pkg}${RESET}"
+    fi
     ((count++))
   done
+}[${percent}%] [${bar}] Installing ${pkg}...
+${RESET}"
+    sudo pacman -S --noconfirm --needed "$pkg" &>/dev/null
+    echo -ne "[2K${GREEN}[✔] Installed ${pkg}${RESET}
+"
+    ((count++))
+  done
+}Installing packages: $*${RESET}"
+  sudo pacman -S --noconfirm --needed "$@"
 }
 
 install_plasma() {
