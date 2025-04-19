@@ -26,7 +26,7 @@ fi
 
 # Show main DE selection menu
 main_menu() {
-  CHOICE=$(dialog --stdout --title ">> XeroLinux Mega Installer <<" --menu "\nChoose Desktop Environment to install:" 15 60 6 \
+  CHOICE=$(dialog --stdout --title ">> XeroLinux Mega DE Installer <<" --menu "\nChoose Desktop Environment to install:" 15 60 6 \
     1 "KDE Plasma" \
     2 "GNOME" \
     3 "XFCE" \
