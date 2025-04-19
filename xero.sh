@@ -31,7 +31,7 @@ main_menu() {
     2 "GNOME" \
     3 "XFCE" \
     4 "Hyprland" \
-    5 "Cosmic Alpha"
+    5 "Cosmic Alpha" \
     6 "Exit")
 
   case "$CHOICE" in
