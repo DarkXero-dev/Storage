@@ -337,9 +337,11 @@ main() {
 
     # Ensure figlet is installed early for banner output
   if ! command -v figlet &>/dev/null; then
-    echo -e "${YELLOW}Installing 'figlet' for banner display...${RESET}"
-    sudo pacman -S --noconfirm --needed figlet
-  fi
+  echo -e "${YELLOW}Installing 'figlet' for banner display...${RESET}"
+  sudo pacman -S --noconfirm --needed figlet &>/dev/null && \
+    echo -e "${GREEN}[✔] figlet installed.${RESET}" || \
+    echo -e "${RED}[✘] Failed to install figlet.${RESET}"
+fi
 
   main_menu
   post_install
