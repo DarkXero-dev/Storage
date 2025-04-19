@@ -139,8 +139,7 @@ check_gpu() {
   elif echo "$INFO" | grep -qi "AMD"; then
     echo "$INFO" | grep -Eqi "RX (4[8-9][0-9]|[5-9][0-9]{2,3})|VEGA|RDNA|RADEON PRO" && OK=true
   fi
-  gpu_check_dialog "$TITLE Compatibility" "Detected GPU:\n$INFO\n\n$([[ "$OK" == true ]] && echo 'Compatible GPU.' || echo 'Compatibility uncertain, if in VM, Make sure 3D acceleration is enabled, or you are using VirGL.')"
-  [[ "$OK" != true ]] && dialog --title "GPU Check Failed" --msgbox "GPU not compatible. Exiting..." 10 40 && exit 1
+  gpu_check_dialog "$TITLE Compatibility" "Detected GPU:\n$INFO\n\n$([[ \"$OK\" == true ]] && echo 'Compatible GPU.' || echo 'Unknown GPU.\nLimited support. If in VM, ensure 3D acceleration is enabled via VirtGL.')"
 }
 
 # Shared post-install
