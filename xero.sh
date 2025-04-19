@@ -196,9 +196,8 @@ post_install() {
   semver zenity gparted hddtemp mlocate jsoncpp fuseiso gettext node-gyp graphviz pkgstats inetutils \
   s3fs-fuse playerctl oniguruma cifs-utils lsb-release dbus-python laptop-detect perl-xml-parser preload
   systemctl enable preload
-}
 
-  echo "Installing GRUB & updating bootloader..."
+    echo "Installing GRUB & updating bootloader..."
   if command -v grub-mkconfig &> /dev/null; then
     install_packages os-prober grub-hooks update-grub
     sed -i 's/#\s*GRUB_DISABLE_OS_PROBER=false/GRUB_DISABLE_OS_PROBER=false/' /etc/default/grub
@@ -217,6 +216,9 @@ post_install() {
       echo -e "${YELLOW}WSL detected – limited support.${RESET}" ;;
   esac
 
+}
+
+  
 
 # Menu stub
 main_menu() {
