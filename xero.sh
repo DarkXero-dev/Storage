@@ -194,11 +194,6 @@ install_hypr() {
   xdg-user-dirs-update
   echo
   sudo systemctl enable power-profiles-daemon.service sddm.service sshd.service
-  echo
-  read -rp "$(echo -e "${CYAN}Apply ML4W dotfiles? (y/N): ${RESET}")" dot_choice
-  if [[ "$dot_choice" =~ ^[Yy]$ ]]; then
-  curl -fsSL https://raw.githubusercontent.com/mylinuxforwork/dotfiles/main/setup-arch.sh -o /tmp/ml4w.sh
-  bash /tmp/ml4w.sh
   fi
 }
 
