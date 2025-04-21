@@ -63,7 +63,7 @@ if [[ -z "$confirm_update" || "$confirm_update" =~ ^[Yy]$ ]]; then
   fi
 else
   echo
-  echo -e "${CYAN}⚠️  Skipped system update.${RESET}"
+  echo -e "${CYAN}⚠️ Skipped system update.${RESET}"
 fi
 echo
 # Optional Flatpak update
@@ -76,7 +76,7 @@ if command -v flatpak &>/dev/null; then
     flatpak update -y
   else
     echo
-    echo -e "${CYAN}⚠️  Skipped Flatpak updates.${RESET}"
+    echo -e "${CYAN}⚠️ Skipped Flatpak updates.${RESET}"
   fi
 else
   echo
