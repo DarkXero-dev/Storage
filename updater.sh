@@ -97,5 +97,4 @@ if command -v rustup &>/dev/null; then
   fi
 fi
 
-echo
 echo -e "\n${GREEN}✅ System update complete. You’re all set!${RESET}"
