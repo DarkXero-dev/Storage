@@ -11,7 +11,12 @@ YELLOW='\033[1;33m'
 RED='\033[0;31m'
 BLUE='\033[1;34m'
 BOLD='\033[1m'
+MAGENTA='\033[0;35m'
+ORANGE='\033[0;33m'
+LIGHT_GREEN='\033[1;32m'
 RESET='\033[0m'
+
+skipped_updates=false
 
 # Banner function
 print_title() {
@@ -54,7 +59,7 @@ fi
 read -rp "$(echo -e "${CYAN}🚀 Proceed with full system update? (Y/n): ${RESET}")" confirm_update
 if [[ -z "$confirm_update" || "$confirm_update" =~ ^[Yy]$ ]]; then
   echo
-  echo -e "${YELLOW}📦 Updating system packages...${RESET}"
+  echo -e "${MAGENTA}📦 Updating system packages...${RESET}"
   echo
   if [[ "$PKG_MANAGER" == "pacman" ]]; then
       sudo pacman -Syyu
@@ -63,38 +68,61 @@ if [[ -z "$confirm_update" || "$confirm_update" =~ ^[Yy]$ ]]; then
   fi
 else
   echo
-  echo -e "${CYAN}⚠️ Skipped system update.${RESET}"
+  echo -e "${ORANGE}⚠️ Skipped system update.${RESET}"
+  skipped_updates=true
 fi
+
 echo
 # Optional Flatpak update
 if command -v flatpak &>/dev/null; then
   read -rp "$(echo -e "${CYAN}📦 Flatpak detected. Update Flatpak apps ? (Y/n): ${RESET}")" update_flatpak
   if [[ -z "$update_flatpak" || "$update_flatpak" =~ ^[Yy]$ ]]; then
     echo
-    echo -e "${YELLOW}📦 Updating Flatpak apps...${RESET}"
+    echo -e "${MAGENTA}📦 Updating Flatpak apps...${RESET}"
     echo
     flatpak update -y
   else
     echo
-    echo -e "${CYAN}⚠️ Skipped Flatpak updates.${RESET}"
+    echo -e "${ORANGE}⚠️ Skipped Flatpak updates.${RESET}"
+    skipped_updates=true
   fi
-else
-  echo
-  echo -e "${CYAN}❌ Flatpak is not installed. Skipping Flatpak updates.${RESET}"
 fi
+
 echo
 # Optional Rust toolchain update
 if command -v rustup &>/dev/null; then
-  read -rp "$(echo -e "${CYAN}🦀 Rustup detected. Sync ? (Y/n): ${RESET}")" update_rust
+  read -rp "$(echo -e "${CYAN}🦀 Rustup detected. Update ? (Y/n): ${RESET}")" update_rust
   if [[ -z "$update_rust" || "$update_rust" =~ ^[Yy]$ ]]; then
     echo
-    echo -e "${YELLOW}🦀 Updating Rust toolchain...${RESET}"
+    echo -e "${MAGENTA}🦀 Updating Rust toolchain...${RESET}"
     echo
     rustup update
   else
     echo
-    echo -e "${CYAN}⚠️ Skipped Rust update.${RESET}"
+    echo -e "${ORANGE}⚠️ Skipped Rust update.${RESET}"
+    skipped_updates=true
   fi
 fi
 
-echo -e "\n${GREEN}✅ System update complete. You’re all set!${RESET}"
+echo
+# Firmware update option using fwupd
+if command -v fwupdmgr >/dev/null 2>&1; then
+  read -rp "$(echo -e "${CYAN}🧩 fwupd detected ! Check & apply device firmware updates? (Y/n): ${RESET}")" confirm_fwupd
+  if [[ -z "$confirm_fwupd" || "$confirm_fwupd" =~ ^[Yy]$ ]]; then
+    echo
+    echo -e "${MAGENTA}🔄 Refreshing firmware metadata...${RESET}"
+    echo
+    sudo fwupdmgr refresh --force && sudo fwupdmgr update
+  else
+    echo
+    echo -e "${ORANGE}⚠️ Skipped firmware update.${RESET}"
+    skipped_updates=true
+  fi
+fi
+
+echo
+if [ "$skipped_updates" = true ]; then
+  echo -e "${ORANGE}⚠️ Looks like you skipped some updates. Try not to, for system stability.${RESET}"
+else
+  echo -e "${LIGHT_GREEN}✅ System update complete. You’re all set!${RESET}"
+fi
