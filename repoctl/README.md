@@ -1,13 +1,16 @@
+### Install Repoctl
+
 yay -S [repoctl](https://github.com/cassava/repoctl)
 
-Set up Repo :  
+### Set up Repo :  
 
 - Create new config : `repoctl conf new path/to/repo`
 - Initialize reo : `repoctl reset -P xerolinux`
 - Update repo : `repoctl update -P xerolinux`
 
 #### Example config.toml
-```
+
+```toml
 columnate = false
 color = "auto"
 quiet = false
@@ -24,4 +27,13 @@ default_profile = "xerolinux"
   interactive = false
   pre_action = ""
   post_action = ""
+```
+
+### Add Alias :
+
+in either `.bashrc` or `.zshrc` add the following alias
+
+```Bash
+alias rrepo='repoctl reset -P xerolinux'
+alias urepo='repoctl update -P xerolinux && rm ~/Work/Repos/xerolinux/x86_64/*.old'
 ```
