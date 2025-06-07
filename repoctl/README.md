@@ -14,7 +14,7 @@ quiet = false
 default_profile = "xerolinux"
 
 [profiles.xerolinux]
-  repo = "/run/media/techxero/XeroROG/Repos/Github/xerolinux/x86_64/xerolinux.db.tar.zst"
+  repo = "/home/techxero/Work/Repos/xerolinux/x86_64/xerolinux.db.tar.zst"
   add_params = []
   rm_params = []
   ignore_aur = []
