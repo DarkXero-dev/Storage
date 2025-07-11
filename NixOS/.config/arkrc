@@ -1,0 +1,11 @@
+[ExtractDialog]
+2 screens: Height=540
+2 screens: Width=1197
+DirHistory[$e]=$HOME/.var/app/,$HOME/Downloads/
+
+[General]
+LockSidebar=true
+ShowSidebar=true
+
+[MainWindow]
+StatusBar=Disabled

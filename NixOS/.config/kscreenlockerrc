@@ -1,0 +1,10 @@
+[$Version]
+update_info=kscreenlocker.upd:0.1-autolock
+
+[Daemon]
+Autolock=false
+LockOnResume=false
+
+[Greeter][Wallpaper][org.kde.image][General]
+Image=/nix/store/09z0zvh0p4nb8lrbj935chvy57plras8-breeze-6.4.2/share/wallpapers/Next/
+PreviewImage=/nix/store/09z0zvh0p4nb8lrbj935chvy57plras8-breeze-6.4.2/share/wallpapers/Next/
