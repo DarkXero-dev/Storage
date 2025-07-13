@@ -189,11 +189,9 @@
     linux-firmware
     vulkan-headers
     grml-zsh-config
-    uget-integrator
     mesa-gl-headers
     bash-completion
     nerd-fonts.hack
-    zsh-powerlevel10k
     zsh-powerlevel10k
     gnome-disk-utility
     gtk-engine-murrine
@@ -201,7 +199,6 @@
     nerd-fonts.meslo-lg
     nerd-fonts.fira-code
     driversi686Linux.mesa
-    tela-circle-icon-theme
     noto-fonts-color-emoji
     vulkan-utility-libraries
     kdePackages.kdeconnect-kde
