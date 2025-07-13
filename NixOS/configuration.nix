@@ -1,80 +1,76 @@
-# Edit this configuration file to define what should be installed on
-# your system.  Help is available in the configuration.nix(5) man page
-# and in the NixOS manual (accessible by running ‘nixos-help’).
-
-{ config, pkgs, ... }:
-
-{
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-    ];
+{pkgs, ...}: {
+  imports = [
+    # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+  ];
 
   # Bootloader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
-
-  # Use latest kernel.
-  boot.kernelPackages = pkgs.linuxPackages_latest;
-
-  networking.hostName = "XeroNix"; # Define your hostname.
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
-
-  # Enable CUPS to print documents.
-  services.printing.enable = true;
-
-  # Enable sound with pipewire.
-  services.pulseaudio.enable = false;
-  security.rtkit.enable = true;
-  services.pipewire = {
-    enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
-    # If you want to use JACK applications, uncomment this
-    #jack.enable = true;
-
-    # use the example session manager (no others are packaged yet so this is enabled by default,
-    # no need to redefine it in your config for now)
-    #media-session.enable = true;
-  };  
+  boot = {
+    loader.systemd-boot.enable = true;
+    loader.efi.canTouchEfiVariables = true;
+    # Use latest kernel.
+    kernelPackages = pkgs.linuxPackages_latest;
+  };
 
   # Enable networking
-  networking.networkmanager.enable = true;
+  networking = {
+    networkmanager.enable = true;
+    hostName = "XeroNix"; # Define your hostname.
+    # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
+    # Configure network proxy if necessary
+    # networking.proxy.default = "http://user:password@proxy:port/";
+    # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
+  };
+
+  security.rtkit.enable = true;
+
+  # Enable CUPS to print documents.
+  services = {
+    printing.enable = true;
+    # Enable sound with pipewire.
+    pulseaudio.enable = false;
+    pipewire = {
+      enable = true;
+      alsa.enable = true;
+      alsa.support32Bit = true;
+      pulse.enable = true;
+      # If you want to use JACK applications, uncomment this
+      #jack.enable = true;
+      # use the example session manager (no others are packaged yet so this is enabled by default,
+      # no need to redefine it in your config for now)
+      #media-session.enable = true;
+    };
+  };
 
   # Automount Drives
-  fileSystems."/mnt/Stuffed" =
-    { device = "/dev/disk/by-uuid/0b1f92a9-cb26-4f05-8346-4059285c5088";
-      fsType = "xfs";
+  fileSystems."/mnt/Stuffed" = {
+    device = "/dev/disk/by-uuid/0b1f92a9-cb26-4f05-8346-4059285c5088";
+    fsType = "xfs";
+  };
+
+  fileSystems."/mnt/Linux" = {
+    device = "/dev/disk/by-uuid/d19923d1-2482-4d8b-9d44-f83a75440165";
+    fsType = "ext4";
+  };
+
+  fileSystems."/mnt/Games" = {
+    device = "/dev/disk/by-uuid/8a69f985-6d4d-499b-a462-decd15f00cd1";
+    fsType = "xfs";
+  };
+
+  hardware = {
+    # Graphics
+    graphics = {
+      enable = true;
+      enable32Bit = true;
     };
-
-  fileSystems."/mnt/Linux" =
-    { device = "/dev/disk/by-uuid/d19923d1-2482-4d8b-9d44-f83a75440165";
-      fsType = "ext4";
+    # Bluetooth
+    bluetooth = {
+      enable = true;
+      powerOnBoot = true;
+      package = pkgs.bluez;
     };
-
-  fileSystems."/mnt/Games" =
-    { device = "/dev/disk/by-uuid/8a69f985-6d4d-499b-a462-decd15f00cd1";
-      fsType = "xfs";
-    };
-
-  # Graphics
-
-  hardware.graphics = {
-    enable = true;
-    enable32Bit = true;
-};
-
-  # Bluetooth
-  hardware.bluetooth = {
-  enable = true;
-  powerOnBoot = true;
-  package = pkgs.bluez;
-};
+  };
 
   # Set your time zone.
   time.timeZone = "Asia/Beirut";
@@ -96,44 +92,43 @@
 
   # Enable the KDE Plasma Desktop Environment.
   services = {
-  displayManager ={
+    displayManager = {
       sddm = {
-       enable = true;
-       wayland = true;
+        enable = true;
+        wayland = true;
       };
       autologin = {
-         enable = true;
-         user = "xero";    
-         }; 
+        enable = true;
+        user = "xero";
+      };
+    };
+    xserver = {
+      enable = true;
+      xkb = {
+        layout = "us";
+        variant = "";
+      };
+    };
+    openssh.enable = true;
+    desktopManager.plasma6.enable = true;
+    flatpak.enable = true;
   };
-   xserver = { 
-    enable = true; 
-    xkb = {
-     layout = "us";
-     variant = "";
-  };
-};
-   openssh.enable = true;
-   desktopManager.plasma6.enable = true;
-   flatpak.enable = true;   
-};
 
-  # XWayland
-  programs.xwayland = {
-     enable = true;
-};
-
-   # Add Flatpak remotes
-   systemd.services.flatpak-repo = {
+  # Add Flatpak remotes
+  systemd.services.flatpak-repo = {
     wantedBy = ["multi-user.target"];
     path = [pkgs.flatpak];
     script = ''
       flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-       '';
+    '';
   };
 
-  # Steam Ahead
-    programs = {
+  programs = {
+    # XWayland
+    xwayland = {
+      enable = true;
+    };
+    # Steam Ahead
     steam = {
       enable = true;
       remotePlay.openFirewall = true;
@@ -141,7 +136,6 @@
       gamescopeSession.enable = true;
       extraCompatPackages = [pkgs.proton-ge-bin pkgs.mangohud];
     };
-
     gamescope = {
       enable = true;
       capSysNice = true;
@@ -149,6 +143,19 @@
         "--rt"
         "--expose-wayland"
       ];
+    };
+    # Install zsh
+    zsh = {
+      enable = true;
+      enableBashCompletion = true;
+      autosuggestions.enable = true;
+      syntaxHighlighting.enable = true;
+    };
+    zsh.ohMyZsh = {
+      enable = true;
+      plugins = ["git"];
+      custom = "$HOME/.oh-my-zsh/custom/";
+      theme = "powerlevel10k/powerlevel10k";
     };
   };
 
@@ -159,16 +166,16 @@
   users.users.xero = {
     isNormalUser = true;
     description = "xero";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = ["networkmanager" "wheel"];
     packages = with pkgs; [
       kdePackages.kate
-    #  thunderbird
+      #  thunderbird
     ];
   };
 
   # Enable automatic login for the user.
-  services.displayManager.autoLogin.enable = true;
-  services.displayManager.autoLogin.user = "xero";
+  #services.displayManager.autoLogin.enable = true;
+  #services.displayManager.autoLogin.user = "xero";
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
@@ -231,21 +238,23 @@
     wineWowPackages.waylandFull
     kdePackages.qtstyleplugin-kvantum
     kdePackages.plasma-browser-integration
-    (python3.withPackages(ps: with ps; [
-        pipx
-        mkdocs
-        mkdocs-macros
-        mkdocs-gitlab
-        mkdocs-get-deps
-        mkdocs-material
-        mkdocs-autorefs
-        mkdocs-rss-plugin
-        mkdocs-glightbox
-        mkdocs-redirects
-        mkdocs-awesome-nav
-        mkdocs-material-extensions
+    (python3.withPackages (
+      ps:
+        with ps; [
+          pipx
+          mkdocs
+          mkdocs-macros
+          mkdocs-gitlab
+          mkdocs-get-deps
+          mkdocs-material
+          mkdocs-autorefs
+          mkdocs-rss-plugin
+          mkdocs-glightbox
+          mkdocs-redirects
+          mkdocs-awesome-nav
+          mkdocs-material-extensions
         ]
-        ))
+    ))
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -255,21 +264,6 @@
   #   enable = true;
   #   enableSSHSupport = true;
   # };
-
-    # Install zsh
-  programs.zsh = {
-    enable = true;
-    enableBashCompletion = true;
-    autosuggestions.enable = true;
-    syntaxHighlighting.enable = true;
-  };
-
-  programs.zsh.ohMyZsh = {
-    enable = true;
-    plugins = [ "git" ];
-    custom = "$HOME/.oh-my-zsh/custom/";
-    theme = "powerlevel10k/powerlevel10k";
-  };
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
@@ -284,5 +278,4 @@
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "25.05"; # Did you read the comment?
-
 }
