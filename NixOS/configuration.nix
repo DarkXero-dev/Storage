@@ -10,6 +10,7 @@
     loader.efi.canTouchEfiVariables = true;
     # Use latest kernel.
     kernelPackages = pkgs.linuxPackages_latest;
+    kernelParams = [ "quiet" "loglevel=3" "nvme_load=yes" ];
   };
 
   # Enable networking
