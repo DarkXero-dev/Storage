@@ -45,19 +45,21 @@
     LC_TIME = "en_US.UTF-8";
   };
 
-  # Enable the X11 windowing system.
-  # You can disable this if you're only using the Wayland session.
-  services.xserver.enable = true;
-
   # Enable the KDE Plasma Desktop Environment.
   services.displayManager.sddm.enable = true;
   services.desktopManager.plasma6.enable = true;
+  services.displayManager.sddm.wayland.enable = true;
 
   # Configure keymap in X11
   services.xserver.xkb = {
     layout = "us";
     variant = "";
   };
+
+  # XWayland
+  programs.xwayland = {
+     enable = true;
+};
 
   # Enable Flatpaks
   services.flatpak.enable = true;
@@ -90,6 +92,44 @@
        '';
   };
 
+  # Steam Ahead
+    programs = {
+    steam = {
+      enable = true;
+      remotePlay.openFirewall = true;
+      dedicatedServer.openFirewall = false;
+      gamescopeSession.enable = true;
+      extraCompatPackages = [pkgs.proton-ge-bin pkgs.mangohud];
+    };
+
+    gamescope = {
+      enable = true;
+      capSysNice = true;
+      args = [
+        "--rt"
+        "--expose-wayland"
+      ];
+    };
+  };
+
+  # Enable the X11 windowing system.
+  # You can disable this if you're only using the Wayland session.
+  services.xserver.enable = true;
+
+  # Graphics
+
+  hardware.graphics = {
+    enable = true;
+    enable32Bit = true;
+};
+
+  # Bluetooth
+  hardware.bluetooth = {
+  enable = true;
+  powerOnBoot = true;
+  package = pkgs.bluez;
+};
+
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
 
@@ -108,9 +148,6 @@
   services.displayManager.autoLogin.enable = true;
   services.displayManager.autoLogin.user = "xero";
 
-  # Install firefox.
-  programs.firefox.enable = true;
-
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
@@ -118,9 +155,7 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     bat
-    zsh
     eza
-    gtk2
     gtk3
     meld
     figlet
@@ -130,10 +165,13 @@
     zsh-powerlevel10k
     kdePackages.dolphin-plugins
     wget
+    curl
     mpv
     amarok
     fastfetch
     btop
+    inxi
+    pciutils
     hblock
     rustup
     hugo
@@ -147,6 +185,15 @@
     hw-probe
     topgrade
     imagemagick
+    uget
+    uget-integrator
+    mesa
+    amdvlk
+    linux-firmware
+    vulkan-headers
+    driversi686Linux.mesa
+    mesa-gl-headers
+    vulkan-utility-libraries
     gnome-disk-utility
     bash-completion
     tela-circle-icon-theme
@@ -161,7 +208,23 @@
     noto-fonts-color-emoji
     zsh-powerlevel10k
     oh-my-posh
+    kdePackages.plasma-browser-integration
     kdePackages.kde-gtk-config
+    (python3.withPackages(ps: with ps; [
+        pipx
+        mkdocs
+        mkdocs-macros
+        mkdocs-gitlab
+        mkdocs-get-deps
+        mkdocs-material
+        mkdocs-autorefs
+        mkdocs-rss-plugin
+        mkdocs-glightbox
+        mkdocs-redirects
+        mkdocs-awesome-nav
+        mkdocs-material-extensions
+        ]
+        ))
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
