@@ -106,24 +106,22 @@
          user = "xero";    
          }; 
   };
-   xserver.enable = true;
+   xserver = { 
+    enable = true; 
+    xkb = {
+     layout = "us";
+     variant = "";
+  };
+};
+   openssh.enable = true;
    desktopManager.plasma6.enable = true;
    flatpak.enable = true;   
 };
-
-  # Configure keymap in X11
-  services.xserver.xkb = {
-    layout = "us";
-    variant = "";
-  };
 
   # XWayland
   programs.xwayland = {
      enable = true;
 };
-
-  # Enable Flatpaks
-  services.flatpak.enable = true;
 
    # Add Flatpak remotes
    systemd.services.flatpak-repo = {
@@ -153,10 +151,6 @@
       ];
     };
   };
-
-  # Enable the X11 windowing system.
-  # You can disable this if you're only using the Wayland session.
-  services.xserver.enable = true;
 
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
@@ -276,11 +270,6 @@
     custom = "$HOME/.oh-my-zsh/custom/";
     theme = "powerlevel10k/powerlevel10k";
   };
-
-  # List services that you want to enable:
-
-  # Enable the OpenSSH daemon.
-  services.openssh.enable = true;
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
