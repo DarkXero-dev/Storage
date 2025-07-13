@@ -99,10 +99,6 @@
          enable = true;
          };
       };
-      autologin = {
-        enable = true;
-        user = "xero";
-      };
     };
     xserver = {
       enable = true;
@@ -115,6 +111,10 @@
     desktopManager.plasma6.enable = true;
     flatpak.enable = true;
   };
+
+# Enable automatic login for the user.
+services.displayManager.autoLogin.enable = true;
+services.displayManager.autoLogin.user = "xero";
 
   # Add Flatpak remotes
   systemd.services.flatpak-repo = {
@@ -175,9 +175,7 @@
     ];
   };
 
-  # Enable automatic login for the user.
-  #services.displayManager.autoLogin.enable = true;
-  #services.displayManager.autoLogin.user = "xero";
+  
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
