@@ -156,60 +156,60 @@
   environment.systemPackages = with pkgs; [
     bat
     eza
+    mpv
+    git
     gtk3
     meld
+    wget
+    curl
+    btop
+    inxi
+    hugo
+    uget
+    mesa
+    cmake
     figlet
     lolcat
     yt-dlp
-    grml-zsh-config
-    zsh-powerlevel10k
-    kdePackages.dolphin-plugins
-    wget
-    curl
-    mpv
     amarok
-    fastfetch
-    btop
-    inxi
-    pciutils
     hblock
     rustup
-    hugo
-    ffmpeg-full
-    hardinfo2
-    cmake
-    lomiri.cmake-extras
-    git
-    winetricks
+    amdvlk
+    pciutils
     wineasio
     hw-probe
     topgrade
+    fastfetch
+    hardinfo2
+    winetricks
+    oh-my-posh
+    ffmpeg-full
     imagemagick
-    uget
-    uget-integrator
-    mesa
-    amdvlk
+    gtk_engines
     linux-firmware
     vulkan-headers
-    driversi686Linux.mesa
+    grml-zsh-config
+    uget-integrator
     mesa-gl-headers
-    vulkan-utility-libraries
-    gnome-disk-utility
     bash-completion
+    nerd-fonts.hack
+    zsh-powerlevel10k
+    zsh-powerlevel10k
+    gnome-disk-utility
+    gtk-engine-murrine
+    lomiri.cmake-extras
+    nerd-fonts.meslo-lg
+    nerd-fonts.fira-code
+    driversi686Linux.mesa
     tela-circle-icon-theme
+    noto-fonts-color-emoji
+    vulkan-utility-libraries
+    kdePackages.kdeconnect-kde
+    kdePackages.kde-gtk-config
+    kdePackages.dolphin-plugins
     wineWowPackages.waylandFull
     kdePackages.qtstyleplugin-kvantum
-    gtk-engine-murrine
-    gtk_engines
-    nerd-fonts.hack
-    nerd-fonts.fira-code
-    kdePackages.kdeconnect-kde
-    nerd-fonts.meslo-lg
-    noto-fonts-color-emoji
-    zsh-powerlevel10k
-    oh-my-posh
     kdePackages.plasma-browser-integration
-    kdePackages.kde-gtk-config
     (python3.withPackages(ps: with ps; [
         pipx
         mkdocs
