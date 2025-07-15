@@ -78,7 +78,6 @@
 
   # Enable Android Support
   programs.adb.enable = true;
-  users.users.xero.extraGroups = [ "adbusers" ];
 
   # Enable automatic login for the user "xero".
   services.displayManager.autoLogin.enable = true;
@@ -190,7 +189,7 @@
   users.users.xero = {
     isNormalUser = true;
     description = "xero";
-    extraGroups = [ "networkmanager" "wheel" "video" ];
+    extraGroups = [ "networkmanager" "wheel" "video" "adbusers" ];
     packages = with pkgs; [
       kdePackages.kate
       # thunderbird
