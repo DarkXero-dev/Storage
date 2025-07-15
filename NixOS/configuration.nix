@@ -225,12 +225,12 @@
     wineasio
     hw-probe
     topgrade
-    v4l-utils # for webcam video device management
+    v4l-utils
     fastfetch
     hardinfo2
     winetricks
     oh-my-posh
-    ffmpeg-full # useful for testing video streams/virtual cams
+    ffmpeg-full
     imagemagick
     gtk_engines
     linux-firmware
