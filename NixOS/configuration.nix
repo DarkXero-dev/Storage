@@ -76,6 +76,10 @@
     flatpak.enable = true;
   };
 
+  # Enable Android Support
+  programs.adb.enable = true;
+  users.users.<your-user>.extraGroups = [ "adbusers" ];
+
   # Enable automatic login for the user "xero".
   services.displayManager.autoLogin.enable = true;
   services.displayManager.autoLogin.user = "xero";
@@ -228,6 +232,7 @@
     v4l-utils
     fastfetch
     hardinfo2
+    androidsdk
     winetricks
     oh-my-posh
     ffmpeg-full
