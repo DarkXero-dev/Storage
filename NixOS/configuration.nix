@@ -197,7 +197,10 @@
   };
 
   # Allow unfree packages
-  nixpkgs.config.allowUnfree = true;
+  nixpkgs.config = {
+  android_sdk.accept_license = true;
+  allowUnfree = true;
+  };
 
   # System packages
   environment.systemPackages = with pkgs; [
