@@ -4,13 +4,22 @@
     ./hardware-configuration.nix
   ];
 
-  # Bootloader.
+  # Bootloader and kernel settings
   boot = {
     loader.systemd-boot.enable = true;
     loader.efi.canTouchEfiVariables = true;
     # Use latest kernel.
     kernelPackages = pkgs.linuxPackages_latest;
     kernelParams = [ "quiet" "splash" "rd.systemd.show_status=false" "rd.udev.log_level=3" "udev.log_priority=3" "nvme_load=yes" ];
+
+    # v4l2loopback module for OBS Virtual Camera
+    extraModulePackages = with pkgs.linuxPackages_latest; [
+      v4l2loopback
+    ];
+    kernelModules = [ "v4l2loopback" ];
+    extraModprobeConfig = ''
+      options v4l2loopback devices=1 video_nr=1 card_label="OBS Virtual Camera" exclusive_caps=1
+    '';
   };
 
   # Enable networking
@@ -23,7 +32,10 @@
     # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
   };
 
-  security.rtkit.enable = true;
+  security = {
+    rtkit.enable = true;
+    polkit.enable = true; # Enable polkit for device access (important for v4l2loopback)
+  };
 
   # Enable CUPS to print documents.
   services = {
@@ -36,14 +48,17 @@
       alsa.support32Bit = true;
       pulse.enable = true;
       # If you want to use JACK applications, uncomment this
-      #jack.enable = true;
-      # use the example session manager (no others are packaged yet so this is enabled by default,
-      # no need to redefine it in your config for now)
-      #media-session.enable = true;
+      # jack.enable = true;
+      # media-session.enable = true;
     };
   };
 
   # Automount Drives
+  fileSystems."/mnt/XeroLinux" = {
+    device = "/dev/disk/by-uuid/c17ca2c4-b59b-467d-91fb-e69af504799f";
+    fsType = "ext4";
+  };
+
   fileSystems."/mnt/Stuffed" = {
     device = "/dev/disk/by-uuid/0b1f92a9-cb26-4f05-8346-4059285c5088";
     fsType = "xfs";
@@ -97,8 +112,8 @@
       sddm = {
         enable = true;
         wayland = {
-         enable = true;
-         };
+          enable = true;
+        };
       };
     };
     xserver = {
@@ -113,9 +128,9 @@
     flatpak.enable = true;
   };
 
-# Enable automatic login for the user.
-services.displayManager.autoLogin.enable = true;
-services.displayManager.autoLogin.user = "xero";
+  # Enable automatic login for the user.
+  services.displayManager.autoLogin.enable = true;
+  services.displayManager.autoLogin.user = "xero";
 
   # Add Flatpak remotes
   systemd.services.flatpak-repo = {
@@ -127,6 +142,12 @@ services.displayManager.autoLogin.user = "xero";
   };
 
   programs = {
+    # OBS Studio with Virtual Camera enabled
+    obs-studio = {
+      enable = true;
+      enableVirtualCamera = true;
+    };
+
     # XWayland
     xwayland = {
       enable = true;
@@ -169,14 +190,12 @@ services.displayManager.autoLogin.user = "xero";
   users.users.xero = {
     isNormalUser = true;
     description = "xero";
-    extraGroups = ["networkmanager" "wheel"];
+    extraGroups = ["networkmanager" "wheel" "video"];
     packages = with pkgs; [
       kdePackages.kate
       #  thunderbird
     ];
   };
-
-  
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
@@ -211,6 +230,7 @@ services.displayManager.autoLogin.user = "xero";
     wineasio
     hw-probe
     topgrade
+    v4l-utils
     fastfetch
     hardinfo2
     winetricks
