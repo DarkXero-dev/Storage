@@ -8,17 +8,25 @@
   boot = {
     loader.systemd-boot.enable = true;
     loader.efi.canTouchEfiVariables = true;
+
     # Use latest kernel.
     kernelPackages = pkgs.linuxPackages_latest;
-    kernelParams = [ "quiet" "splash" "rd.systemd.show_status=false" "rd.udev.log_level=3" "udev.log_priority=3" "nvme_load=yes" ];
+    kernelParams = [
+      "quiet"
+      "splash"
+      "rd.systemd.show_status=false"
+      "rd.udev.log_level=3"
+      "udev.log_priority=3"
+      "nvme_load=yes"
+    ];
 
-    # v4l2loopback module for OBS Virtual Camera
+    # Load and configure v4l2loopback for OBS Flatpak virtual camera
     extraModulePackages = with pkgs.linuxPackages_latest; [
       v4l2loopback
     ];
     kernelModules = [ "v4l2loopback" ];
     extraModprobeConfig = ''
-      options v4l2loopback devices=1 video_nr=1 card_label="OBS Virtual Camera" exclusive_caps=1
+      options v4l2loopback devices=1 video_nr=1 card_label="OBS Cam" exclusive_caps=1
     '';
   };
 
@@ -26,20 +34,17 @@
   networking = {
     networkmanager.enable = true;
     hostName = "XeroNix"; # Define your hostname.
-    # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-    # Configure network proxy if necessary
-    # networking.proxy.default = "http://user:password@proxy:port/";
-    # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
   };
 
   security = {
     rtkit.enable = true;
-    polkit.enable = true; # Enable polkit for device access (important for v4l2loopback)
+    polkit.enable = true; # Needed for device permission in Flatpak
   };
 
   # Enable CUPS to print documents.
   services = {
     printing.enable = true;
+
     # Enable sound with pipewire.
     pulseaudio.enable = false;
     pipewire = {
@@ -47,11 +52,33 @@
       alsa.enable = true;
       alsa.support32Bit = true;
       pulse.enable = true;
-      # If you want to use JACK applications, uncomment this
-      # jack.enable = true;
-      # media-session.enable = true;
+      # jack.enable = true; # If JACK apps needed
+      # media-session.enable = true; # session manager
     };
+
+    displayManager = {
+      sddm = {
+        enable = true;
+        wayland = {
+          enable = true;
+        };
+      };
+    };
+    xserver = {
+      enable = true;
+      xkb = {
+        layout = "us";
+        variant = "";
+      };
+    };
+    openssh.enable = true;
+    desktopManager.plasma6.enable = true;
+    flatpak.enable = true;
   };
+
+  # Enable automatic login for the user "xero".
+  services.displayManager.autoLogin.enable = true;
+  services.displayManager.autoLogin.user = "xero";
 
   # Automount Drives
   fileSystems."/mnt/XeroLinux" = {
@@ -106,32 +133,6 @@
     LC_TIME = "en_US.UTF-8";
   };
 
-  # Enable the KDE Plasma Desktop Environment.
-  services = {
-    displayManager = {
-      sddm = {
-        enable = true;
-        wayland = {
-          enable = true;
-        };
-      };
-    };
-    xserver = {
-      enable = true;
-      xkb = {
-        layout = "us";
-        variant = "";
-      };
-    };
-    openssh.enable = true;
-    desktopManager.plasma6.enable = true;
-    flatpak.enable = true;
-  };
-
-  # Enable automatic login for the user.
-  services.displayManager.autoLogin.enable = true;
-  services.displayManager.autoLogin.user = "xero";
-
   # Add Flatpak remotes
   systemd.services.flatpak-repo = {
     wantedBy = ["multi-user.target"];
@@ -142,17 +143,13 @@
   };
 
   programs = {
-    # OBS Studio with Virtual Camera enabled
-    obs-studio = {
-      enable = true;
-      enableVirtualCamera = true;
-    };
+    # OBS Studio is installed as Flatpak; do NOT enable native obs-studio virtual camera
+    # Do NOT enable programs.obs-studio.enableVirtualCamera here to avoid conflicts
 
     # XWayland
-    xwayland = {
-      enable = true;
-    };
-    # Steam Ahead
+    xwayland.enable = true;
+
+    # Steam Ahead with extra options
     steam = {
       enable = true;
       remotePlay.openFirewall = true;
@@ -160,6 +157,7 @@
       gamescopeSession.enable = true;
       extraCompatPackages = [pkgs.proton-ge-bin pkgs.mangohud];
     };
+
     gamescope = {
       enable = true;
       capSysNice = true;
@@ -168,7 +166,8 @@
         "--expose-wayland"
       ];
     };
-    # Install zsh
+
+    # Zsh config
     zsh = {
       enable = true;
       enableBashCompletion = true;
@@ -183,25 +182,21 @@
     };
   };
 
-  # Enable touchpad support (enabled default in most desktopManager).
-  # services.xserver.libinput.enable = true;
-
-  # Define a user account. Don't forget to set a password with ‘passwd’.
+  # Define user account "xero" with video group access for webcam permissions
   users.users.xero = {
     isNormalUser = true;
     description = "xero";
-    extraGroups = ["networkmanager" "wheel" "video"];
+    extraGroups = [ "networkmanager" "wheel" "video" ];
     packages = with pkgs; [
       kdePackages.kate
-      #  thunderbird
+      # thunderbird
     ];
   };
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
+  # System packages
   environment.systemPackages = with pkgs; [
     bat
     eza
@@ -230,12 +225,12 @@
     wineasio
     hw-probe
     topgrade
-    v4l-utils
+    v4l-utils # for webcam video device management
     fastfetch
     hardinfo2
     winetricks
     oh-my-posh
-    ffmpeg-full
+    ffmpeg-full # useful for testing video streams/virtual cams
     imagemagick
     gtk_engines
     linux-firmware
@@ -278,25 +273,18 @@
     ))
   ];
 
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
+  # Commented out examples of services or programs you might enable later
   # programs.mtr.enable = true;
   # programs.gnupg.agent = {
   #   enable = true;
   #   enableSSHSupport = true;
   # };
 
-  # Open ports in the firewall.
+  # Firewall settings (disabled or customized as required)
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];
-  # Or disable the firewall altogether.
   # networking.firewall.enable = false;
 
-  # This value determines the NixOS release from which the default
-  # settings for stateful data, like file locations and database versions
-  # on your system were taken. It‘s perfectly fine and recommended to leave
-  # this value at the release version of the first install of this system.
-  # Before changing this value read the documentation for this option
-  # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
+  # System state version
   system.stateVersion = "25.05"; # Did you read the comment?
 }
