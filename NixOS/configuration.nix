@@ -78,7 +78,7 @@
 
   # Enable Android Support
   programs.adb.enable = true;
-  users.users.<your-user>.extraGroups = [ "adbusers" ];
+  users.users.xero.extraGroups = [ "adbusers" ];
 
   # Enable automatic login for the user "xero".
   services.displayManager.autoLogin.enable = true;
