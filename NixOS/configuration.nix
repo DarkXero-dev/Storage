@@ -14,9 +14,6 @@
     kernelParams = [
       "quiet"
       "splash"
-      "rd.systemd.show_status=false"
-      "rd.udev.log_level=3"
-      "udev.log_priority=3"
       "nvme_load=yes"
     ];
 
@@ -189,7 +186,6 @@
 
     # Disable GTK virt-manager to avoid conflicts, use Qt version instead
     virt-manager.enable = false;
-    virt-manager-qt.enable = true;
   };
 
   # Define user account "xero" with video group access for webcam permissions,
@@ -322,8 +318,8 @@
     wantedBy = [ "multi-user.target" ];
     serviceConfig = {
       Type = "oneshot";
-      ExecStart = "${pkgs.virsh}/bin/virsh net-start default";
-      ExecStartPost = "${pkgs.virsh}/bin/virsh net-autostart default";
+      ExecStart = "${pkgs.libvirt}/bin/virsh net-start default";
+      ExecStartPost = "${pkgs.libvirt}/bin/virsh net-autostart default";
       RemainAfterExit = true;
     };
   };
