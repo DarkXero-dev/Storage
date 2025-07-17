@@ -34,7 +34,7 @@
   programs.virt-manager.enable = true;
   users.groups.libvirtd.members = ["xero"];
   virtualisation.libvirtd.enable = true;
-  virtualisation.spiceUSBRedirection.enable = true;  
+  virtualisation.spiceUSBRedirection.enable = true;
 
   # Enable networking
   networking = {
