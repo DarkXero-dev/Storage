@@ -14,6 +14,9 @@
     kernelParams = [
       "quiet"
       "splash"
+      "rd.systemd.show_status=false"
+      "rd.udev.log_level=3"
+      "udev.log_priority=3"
       "nvme_load=yes"
     ];
 
@@ -26,6 +29,12 @@
       options v4l2loopback devices=1 video_nr=1 card_label="OBS Virtual Camera" exclusive_caps=1
     '';
   };
+
+  # Virt-Manager
+  programs.virt-manager.enable = true;
+  users.groups.libvirtd.members = ["xero"];
+  virtualisation.libvirtd.enable = true;
+  virtualisation.spiceUSBRedirection.enable = true;  
 
   # Enable networking
   networking = {
@@ -71,9 +80,6 @@
     openssh.enable = true;
     desktopManager.plasma6.enable = true;
     flatpak.enable = true;
-
-    # Enable spice agent daemon for clipboard and device sharing in guests
-    spice-vdagentd.enable = true;
   };
 
   # Enable Android Support
@@ -183,17 +189,13 @@
       custom = "$HOME/.oh-my-zsh/custom/";
       theme = "powerlevel10k/powerlevel10k";
     };
-
-    # Disable GTK virt-manager to avoid conflicts, use Qt version instead
-    virt-manager.enable = false;
   };
 
-  # Define user account "xero" with video group access for webcam permissions,
-  # and add libvirtd group for virtualization permissions.
+  # Define user account "xero" with video group access for webcam permissions
   users.users.xero = {
     isNormalUser = true;
     description = "xero";
-    extraGroups = [ "networkmanager" "wheel" "video" "adbusers" "libvirtd" ];
+    extraGroups = [ "networkmanager" "wheel" "video" "adbusers" ];
     packages = with pkgs; [
       kdePackages.kate
       # thunderbird
@@ -202,11 +204,11 @@
 
   # Allow unfree packages
   nixpkgs.config = {
-    android_sdk.accept_license = true;
-    allowUnfree = true;
+  android_sdk.accept_license = true;
+  allowUnfree = true;
   };
 
-  # System packages, with virtualization packages added
+  # System packages
   environment.systemPackages = with pkgs; [
     bat
     eza
@@ -235,28 +237,21 @@
     wineasio
     hw-probe
     topgrade
-    spice-gtk
-    qemu_full
     v4l-utils
     fastfetch
     hardinfo2
-    win-spice
-    win-virtio
     androidsdk
     winetricks
     oh-my-posh
     ffmpeg-full
     imagemagick
     gtk_engines
-    virt-viewer
-    spice-protocol
     linux-firmware
     vulkan-headers
     grml-zsh-config
     mesa-gl-headers
     bash-completion
     nerd-fonts.hack
-    virt-manager-qt
     zsh-powerlevel10k
     gnome-disk-utility
     gtk-engine-murrine
@@ -290,39 +285,6 @@
         ]
     ))
   ];
-
-  ##############################################
-  # Virtualisation configuration               #
-  ##############################################
-
-  virtualisation.libvirtd = {
-    enable = true;
-    qemu = {
-      package = pkgs.qemu_full;
-      runAsRoot = true;
-      swtpm.enable = true; # enable TPM for secure boot and high trust VM features
-      ovmf = {
-        enable = true;
-        packages = [ pkgs.OVMFFull.fd ];
-      };
-    };
-  };
-
-  ##############################################
-  # Autostart and autostart default libvirt net #
-  ##############################################
-
-  systemd.services."libvirtd-default-network" = {
-    description = "Libvirt default network autostart";
-    after = [ "libvirtd.service" ];
-    wantedBy = [ "multi-user.target" ];
-    serviceConfig = {
-      Type = "oneshot";
-      ExecStart = "${pkgs.libvirt}/bin/virsh net-start default";
-      ExecStartPost = "${pkgs.libvirt}/bin/virsh net-autostart default";
-      RemainAfterExit = true;
-    };
-  };
 
   # Commented out examples of services or programs you might enable later
   # programs.mtr.enable = true;
