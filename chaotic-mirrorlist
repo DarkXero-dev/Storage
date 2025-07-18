@@ -1,7 +1,0 @@
-Server = https://de-4-mirror.chaotic.cx/$repo/$arch
-Server = https://gr-mirror.chaotic.cx/$repo/$arch
-Server = https://de-3-mirror.chaotic.cx/$repo/$arch
-Server = https://br-mirror.chaotic.cx/$repo/$arch
-Server = https://geo-mirror.chaotic.cx/$repo/$arch
-Server = https://in-mirror.chaotic.cx/$repo/$arch
-Server = https://in-4-mirror.chaotic.cx/$repo/$arch

@@ -16,16 +16,16 @@ echo
 	#Let us set the desktop"
 	#First letter of desktop is small letter
 
-	desktop="cosmic"
-	dmDesktop="cosmic"
+	desktop="plasma"
+	dmDesktop="plasma"
 
-	isoLabel='xerolinux-cosmic-'$(date +"%Y.%m")'-x86_64.iso'
+	isoLabel='xerolinux-kde-nvidia-'$(date +"%Y.%m")'-x86_64.iso'
 
 	# setting of the general parameters
-	mkdir -p ~/XeroISO/Cosmic
+	mkdir -p ~/XeroISO/KDE
 	archisoRequiredVersion="archiso 84-1"
 	buildFolder=$HOME"/iso-build"
-	outFolder=$HOME"/XeroISO/Cosmic"
+	outFolder=$HOME"/XeroISO/KDENV"
 	archisoVersion=$(sudo pacman -Q archiso)
 
 	# If you are ready to use your personal repo and personal packages
@@ -141,7 +141,7 @@ echo
 	echo "Copying the Archiso folder to build work"
 	echo
 	mkdir $buildFolder
-	cp -r XeroCosmic/ $buildFolder/XeroCosmic
+	cp -r KDENV/ $buildFolder/KDENV
 
 echo
 echo "################################################################## "
@@ -155,26 +155,26 @@ echo "################################################################## "
 echo
 
 	echo "Removing the old packages.x86_64 file from build folder"
-	rm $buildFolder/XeroCosmic/packages.x86_64
-	rm $buildFolder/XeroCosmic/packages-personal-repo.x86_64
+	rm $buildFolder/KDENV/packages.x86_64
+	rm $buildFolder/KDENV/packages-personal-repo.x86_64
 	echo
 
 	echo "Copying the new packages.x86_64 file to the build folder"
-	cp -f XeroCosmic/packages.x86_64 $buildFolder/XeroCosmic/packages.x86_64
+	cp -f KDENV/packages.x86_64 $buildFolder/KDENV/packages.x86_64
 	echo
 
 	if [ $personalrepo == true ]; then
 		echo "Adding packages from your personal repository - packages-personal-repo.x86_64"
-		printf "\n" | sudo tee -a $buildFolder/XeroCosmic/packages.x86_64
-		cat XeroCosmic/packages-personal-repo.x86_64 | sudo tee -a $buildFolder/XeroCosmic/packages.x86_64
+		printf "\n" | sudo tee -a $buildFolder/KDENV/packages.x86_64
+		cat KDENV/packages-personal-repo.x86_64 | sudo tee -a $buildFolder/KDENV/packages.x86_64
 	fi
 
 	if [ $personalrepo == true ]; then
 		echo "Adding our own repo to /etc/pacman.conf"
-		printf "\n" | sudo tee -a $buildFolder/XeroCosmic/pacman.conf
-		printf "\n" | sudo tee -a $buildFolder/XeroCosmic/airootfs/etc/pacman.conf
-		cat personal-repo | sudo tee -a $buildFolder/XeroCosmic/pacman.conf
-		cat personal-repo | sudo tee -a $buildFolder/XeroCosmic/airootfs/etc/pacman.conf
+		printf "\n" | sudo tee -a $buildFolder/KDENV/pacman.conf
+		printf "\n" | sudo tee -a $buildFolder/KDENV/airootfs/etc/pacman.conf
+		cat personal-repo | sudo tee -a $buildFolder/KDENV/pacman.conf
+		cat personal-repo | sudo tee -a $buildFolder/KDENV/airootfs/etc/pacman.conf
 	fi
 
 echo
@@ -205,15 +205,16 @@ echo
 
 	echo "Changing all references"
 	echo
-	sed -i 's/'$oldname1'/'$newname1'/g' $buildFolder/XeroCosmic/profiledef.sh
-	sed -i 's/'$oldname2'/'$newname2'/g' $buildFolder/XeroCosmic/profiledef.sh
-	sed -i 's/'$oldname3'/'$newname3'/g' $buildFolder/XeroCosmic/airootfs/etc/dev-rel
-	sed -i 's/'$oldname4'/'$newname4'/g' $buildFolder/XeroCosmic/airootfs/etc/hostname
+	sed -i 's/'$oldname1'/'$newname1'/g' $buildFolder/KDENV/profiledef.sh
+	sed -i 's/'$oldname2'/'$newname2'/g' $buildFolder/KDENV/profiledef.sh
+	sed -i 's/'$oldname3'/'$newname3'/g' $buildFolder/KDENV/airootfs/etc/dev-rel
+	sed -i 's/'$oldname4'/'$newname4'/g' $buildFolder/KDENV/airootfs/etc/hostname
+	sed -i 's/'$oldname5'/'$newname5'/g' $buildFolder/KDENV/airootfs/etc/sddm.conf
 
 	echo "Adding time to /etc/dev-rel"
 	date_build=$(date -d now)
 	echo "Iso build on : "$date_build
-	sudo sed -i "s/\(^ISO_BUILD=\).*/\1$date_build/" $buildFolder/XeroCosmic/airootfs/etc/dev-rel
+	sudo sed -i "s/\(^ISO_BUILD=\).*/\1$date_build/" $buildFolder/KDENV/airootfs/etc/dev-rel
 
 echo
 echo "################################################################## "
@@ -225,8 +226,8 @@ echo "################################################################## "
 echo
 
 	[ -d $outFolder ] || mkdir $outFolder
-	cd $buildFolder/XeroCosmic/
-	sudo mkarchiso -v -w $buildFolder -o $outFolder $buildFolder/XeroCosmic/
+	cd $buildFolder/KDENV/
+	sudo mkarchiso -v -w $buildFolder -o $outFolder $buildFolder/KDENV/
 
 
 

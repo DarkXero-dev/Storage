@@ -23,7 +23,7 @@ echo
 
 	# setting of the general parameters
 	mkdir -p ~/XeroISO/KDE
-	archisoRequiredVersion="archiso 83-1"
+	archisoRequiredVersion="archiso 84-1"
 	buildFolder=$HOME"/iso-build"
 	outFolder=$HOME"/XeroISO/KDE"
 	archisoVersion=$(sudo pacman -Q archiso)
