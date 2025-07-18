@@ -1,10 +1,4 @@
-neofetch
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-# Initialization code that may require console input (password prompts, [y/n]
-# confirmations, etc.) must go above this block; everything else may go below.
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
+fastfetch
 
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
@@ -12,11 +6,21 @@ fi
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 
+# Path to your emacs installation.
+export PATH="$HOME/.config/emacs/bin:$PATH"
+
+# Using Oh-My-Posh.
+eval "$(oh-my-posh init zsh --config $HOME/.config/ohmyposh/xero.omp.json)"
+
+# Special Clear Message
+alias clsm='clear && figlet -c -t -f small "Welcome to XeroLinux, ${USER:u}" | lolcat'
+alias xff='clear && fastfetch --config ~/.config/fastfetch/stationxero.jsonc'
+
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-ZSH_THEME="powerlevel10k/powerlevel10k"
+# ZSH_THEME="powerlevel10k/powerlevel10k"
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -78,7 +82,7 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git aliases archlinux branch github zsh-autosuggestions zsh-syntax-highlighting zsh-completions zsh-interactive-cd zsh-navigation-tools)
+plugins=(git aliases archlinux branch github history zsh-autosuggestions zsh-syntax-highlighting zsh-completions zsh-interactive-cd zsh-navigation-tools zsh-history-substring-search)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -109,6 +113,12 @@ source $ZSH/oh-my-zsh.sh
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 #source /usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme
 
+# Path to bat config
+export BAT_CONFIG_PATH="~/.config/bat/config.conf"
+
+# LibAwaita Theme
+export GTK_THEME=Layan-Dark
+
 ##Cmatrix thing
 alias matrix='cmatrix -s -C magenta'
 
@@ -125,6 +135,10 @@ alias ll='exa -l --color=always --group-directories-first --icons'  # long forma
 alias lt='exa -aT --color=always --group-directories-first --icons' # tree listing
 alias l='exa -lah --color=always --group-directories-first --icons' # tree listing
 
+#proxy/net
+alias rnet="sudo systemctl restart NetworkManager"
+alias kudu='sshpass -p "Q123456789Q" ssh -D 8080 -CNq proxy@v.kudu.day -p 2022'
+
 #pacman unlock
 alias unlock="sudo rm /var/lib/pacman/db.lck"
 
@@ -137,16 +151,19 @@ alias wget="wget -c"
 #readable output
 alias df='df -h'
 
+#Replace nano with msedit
+alias nano="msedit "
+alias snano="sudo msedit "
+
 #userlist
 alias userlist="cut -d: -f1 /etc/passwd"
 
 #Pacman for software managment
-alias upall='topgrade'
-alias search='pamac search '
-alias remove='pamac remove '
-alias install='pamac install'
-alias linstall='sudo pacman -U '
-alias update='yay -Syyu && fpup'
+alias search='pacman -Ss '
+alias remove='sudo pacman -Rcns '
+alias install='sudo pacman -S '
+alias linstall='sudo pacman -U *.pkg.tar.zst'
+alias update='paru && fpup'
 alias clrcache='sudo pacman -Scc'
 alias orphans='sudo pacman -Rns $(pacman -Qtdq)'
 
@@ -154,10 +171,15 @@ alias orphans='sudo pacman -Rns $(pacman -Qtdq)'
 alias pget='paru -S '
 alias prm='paru -Rs '
 alias psr='paru -Ss '
-alias upall='topgrade'
+alias upall='sh ~/scripts/updates.sh'
 
 #Flatpak Update
 alias fpup='flatpak update'
+
+# Replace stuff with bat
+alias cat='bat '
+alias rg='batgrep '
+alias man='tldr '
 
 #Snap Update
 alias sup='sudo snap refresh'
@@ -178,7 +200,7 @@ alias jctl='journalctl -p 3 -xb'
 alias ssaver='xscreensaver-demo'
 alias reload='cd ~ && source ~/.zshrc'
 alias pingme='ping -c64 github.com'
-alias cls='clear && neofetch'
+alias cls='clear && fastfetch'
 alias traceme='traceroute github.com'
 
 #hardware info --short
@@ -234,18 +256,14 @@ alias rip="expac --timefmt='%Y-%m-%d %T' '%l\t%n %v' | sort | tail -200 | nl"
 alias riplong="expac --timefmt='%Y-%m-%d %T' '%l\t%n %v' | sort | tail -3000 | nl"
 
 #Builder's Paradise
-alias xliso='cd /run/media/techxero/XeroROG/Public/ISOs/xero_iso/ && ./build.sh'
-alias xfiso='cd /run/media/techxero/XeroROG/Public/ISOs/xero_xfce_iso/ && ./build.sh'
-alias xgiso='cd /run/media/techxero/XeroROG/Public/ISOs/xero_g_iso/ && ./build.sh'
-alias pxliso='cd /run/media/techxero/XeroROG/Public/ISOs/xero_iso/ && ./push.sh'
-alias urepo='cd /run/media/techxero/XeroROG/Repos/Github/xerolinux_repo/ && ./update.sh && ./push.sh'
-alias uirepo='cd /run/media/techxero/XeroROG/Repos/Hoster/xiso/ && ./update.sh'
-alias uxrepo='cd /run/media/techxero/XeroROG/Repos/Hoster/xerolinux_repo_xl/ && ./update.sh'
-alias ugrepo='cd /run/media/techxero/XeroROG/Repos/Hoster/xhbp/ && ./update.sh'
-alias nvrepo='cd /run/media/techxero/XeroROG/Repos/Hoster/xerolinux_nvidia_repo/ && ./update.sh'
+alias rrepo='repoctl reset -P xerolinux'
+alias xiso='cd /home/techxero/Work/Project/xero-build/ && sh exec.sh'
+alias urepo='repoctl update -P xerolinux && rm ~/Work/Repos/xerolinux/x86_64/*.old'
+alias uget='repoctl down -r '
 
-#Restart Services
-
+#Fixes & Tools
+alias rshell='kquitapp6 plasmashell && kstart plasmashell'
+alias rpower='sudo systemctl restart power-profiles-daemon'
 
 ##Refresh Keys
 alias rkeys='sudo pacman-key --refresh-keys'
@@ -263,14 +281,18 @@ alias xdx='updpkgsums && makepkg -r -s --noconfirm'
 alias xddx='makepkg -g >> PKGBUILD && makepkg -r -s --noconfirm'
 
 ## Ventoy Web
-alias vweb='cd /opt/ventoy/ && sudo sh VentoyPlugson.sh -H 127.0.0.1 /dev/sde'
+alias vweb='cd /opt/ventoy/ && sudo sh VentoyPlugson.sh -H 127.0.0.1 /dev/sdd'
+
+## WebDev
+alias hs='hugo server'
+alias hg='hugo && ./push.sh'
+
+alias mb='mkdocs build -c && ./push.sh'
+alias ms='mkdocs serve'
 
 #shutdown or reboot
 alias sr="sudo reboot"
 alias ssn="sudo shutdown now"
-
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 # kdesrc-build #################################################################
 
@@ -423,8 +445,6 @@ complete -o nospace -F _comp-kdesrc-run kdesrc-run
 
 ################################################################################
 
-# Added by ProtonUp-Qt on 09-05-2023 00:13:28
-if [ -d "/home/xero/stl/prefix" ]; then export PATH="$PATH:/home/xero/stl/prefix"; fi
 # Shell-GPT integration ZSH v0.1
 _sgpt_zsh() {
 if [[ -n "$BUFFER" ]]; then
@@ -437,3 +457,10 @@ fi
 }
 zle -N _sgpt_zsh
 # Shell-GPT integration ZSH v0.1
+
+# Added by ProtonUp-Qt on 24-06-2024 22:40:48
+if [ -d "/home/techxero/stl/prefix" ]; then export PATH="$PATH:/home/techxero/stl/prefix"; fi
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/cuda/lib64
+
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:/home/techxero/.lmstudio/bin"
