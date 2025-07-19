@@ -257,7 +257,6 @@
     imagemagick
     gtk_engines
     bridge-utils
-    obs-vkcapture
     spice-protocol
     linux-firmware
     vulkan-headers
@@ -279,6 +278,7 @@
     kdePackages.kde-gtk-config
     kdePackages.dolphin-plugins
     wineWowPackages.waylandFull
+    obs-studio-plugins.obs-vkcapture
     kdePackages.qtstyleplugin-kvantum
     androidenv.androidPkgs.platform-tools
     kdePackages.plasma-browser-integration
