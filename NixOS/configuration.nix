@@ -257,6 +257,7 @@
     imagemagick
     gtk_engines
     bridge-utils
+    obs-vkcapture
     spice-protocol
     linux-firmware
     vulkan-headers
