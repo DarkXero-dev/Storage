@@ -14,9 +14,6 @@
     kernelParams = [
       "quiet"
       "splash"
-      "rd.systemd.show_status=false"
-      "rd.udev.log_level=3"
-      "udev.log_priority=3"
       "nvme_load=yes"
     ];
 
@@ -24,7 +21,7 @@
     extraModulePackages = with pkgs.linuxPackages_latest; [
       v4l2loopback
     ];
-    kernelModules = [ "v4l2loopback" ];
+    kernelModules = [ "v4l2loopback" "kvm-intel" "kvm-amd" ];
     extraModprobeConfig = ''
       options v4l2loopback devices=1 video_nr=1 card_label="OBS Virtual Camera" exclusive_caps=1
     '';
@@ -35,10 +32,20 @@
   users.groups.libvirtd.members = ["xero"];
   virtualisation.libvirtd.enable = true;
   virtualisation.spiceUSBRedirection.enable = true;
+  services.spice-vdagentd.enable = true;
+  services.qemuGuest.enable = true;
 
   # Enable networking
   networking = {
     networkmanager.enable = true;
+    useDHCP = false;
+    bridges = {
+      "br0" = {
+        interfaces = [ "enp17s0" ];
+      };
+    };
+    interfaces.br0.useDHCP = true;
+    interfaces.enp17s0.useDHCP = true;
     hostName = "XeroNix"; # Define your hostname.
   };
 
@@ -195,7 +202,7 @@
   users.users.xero = {
     isNormalUser = true;
     description = "xero";
-    extraGroups = [ "networkmanager" "wheel" "video" "adbusers" ];
+    extraGroups = [ "networkmanager" "wheel" "video" "adbusers" "libvirtd" ];
     packages = with pkgs; [
       kdePackages.kate
       # thunderbird
@@ -204,7 +211,6 @@
 
   # Allow unfree packages
   nixpkgs.config = {
-  android_sdk.accept_license = true;
   allowUnfree = true;
   };
 
@@ -233,19 +239,25 @@
     hblock
     rustup
     amdvlk
+    OVMFFull
+    iptables
     pciutils
     wineasio
     hw-probe
     topgrade
+    qemu-user
+    spice-gtk
+    qemu-utils
     v4l-utils
     fastfetch
     hardinfo2
-    androidsdk
     winetricks
     oh-my-posh
     ffmpeg-full
     imagemagick
     gtk_engines
+    bridge-utils
+    spice-protocol
     linux-firmware
     vulkan-headers
     grml-zsh-config
@@ -267,6 +279,7 @@
     kdePackages.dolphin-plugins
     wineWowPackages.waylandFull
     kdePackages.qtstyleplugin-kvantum
+    androidenv.androidPkgs.platform-tools
     kdePackages.plasma-browser-integration
     (python3.withPackages (
       ps:
