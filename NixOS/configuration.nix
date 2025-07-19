@@ -239,7 +239,6 @@
     hblock
     rustup
     amdvlk
-    OVMFFull
     iptables
     pciutils
     wineasio
