@@ -256,6 +256,7 @@
     gnome-disk-utility
     gtk-engine-murrine
     lomiri.cmake-extras
+    kdePackages.yakuake
     nerd-fonts.meslo-lg
     nerd-fonts.fira-code
     driversi686Linux.mesa
