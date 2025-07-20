@@ -69,9 +69,7 @@
     displayManager = {
       sddm = {
         enable = true;
-        wayland = {
-          enable = true;
-        };
+        wayland.enable = true;
       };
 
       autoLogin = {
@@ -87,6 +85,7 @@
         variant = "";
       };
     };
+
     openssh.enable = true;
     desktopManager.plasma6.enable = true;
     flatpak.enable = true;
