@@ -1,0 +1,89 @@
+{ pkgs, ... }:
+
+{
+  # System packages
+  environment.systemPackages = with pkgs; [
+    bat
+    eza
+    mpv
+    git
+    gtk3
+    meld
+    wget
+    curl
+    btop
+    inxi
+    hugo
+    uget
+    mesa
+    unrar
+    p7zip
+    cmake
+    figlet
+    lolcat
+    yt-dlp
+    amarok
+    hblock
+    rustup
+    amdvlk
+    iptables
+    pciutils
+    wineasio
+    hw-probe
+    topgrade
+    qemu-user
+    spice-gtk
+    qemu-utils
+    v4l-utils
+    fastfetch
+    hardinfo2
+    winetricks
+    oh-my-posh
+    ffmpeg-full
+    imagemagick
+    gtk_engines
+    bridge-utils
+    spice-protocol
+    linux-firmware
+    vulkan-headers
+    grml-zsh-config
+    mesa-gl-headers
+    bash-completion
+    nerd-fonts.hack
+    zsh-powerlevel10k
+    gnome-disk-utility
+    gtk-engine-murrine
+    lomiri.cmake-extras
+    kdePackages.yakuake
+    nerd-fonts.meslo-lg
+    nerd-fonts.fira-code
+    driversi686Linux.mesa
+    noto-fonts-color-emoji
+    vulkan-utility-libraries
+    kdePackages.kdeconnect-kde
+    kdePackages.kde-gtk-config
+    kdePackages.dolphin-plugins
+    wineWowPackages.waylandFull
+    obs-studio-plugins.obs-vkcapture
+    kdePackages.qtstyleplugin-kvantum
+    androidenv.androidPkgs.platform-tools
+    kdePackages.plasma-browser-integration
+    (python3.withPackages (
+      ps:
+        with ps; [
+          pipx
+          mkdocs
+          mkdocs-macros
+          mkdocs-gitlab
+          mkdocs-get-deps
+          mkdocs-material
+          mkdocs-autorefs
+          mkdocs-rss-plugin
+          mkdocs-glightbox
+          mkdocs-redirects
+          mkdocs-awesome-nav
+          mkdocs-material-extensions
+        ]
+    ))
+  ];
+}
