@@ -85,6 +85,7 @@
         variant = "";
       };
     };
+
     openssh.enable = true;
     desktopManager.plasma6.enable = true;
     flatpak.enable = true;
