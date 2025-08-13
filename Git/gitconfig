@@ -1,0 +1,15 @@
+[pull]
+	rebase = false
+[push]
+	default = simple
+[user]
+	name = DarkXero-dev
+	email = steve@techxero.com
+[credential]
+	helper = cache --timeout=96000
+[init]
+	defaultBranch = main
+
+# Abort if transfer speed is less than 1000 bytes/second for more than 5 seconds
+lowSpeedLimit = 25000
+lowSpeedTime = 75
