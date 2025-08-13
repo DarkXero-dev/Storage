@@ -1,0 +1,15 @@
+cider
+gmrun
+mkdocs-backlinks-plugin
+mkdocs-ezlinks-plugin
+mkdocs-glightbox
+mkdocs-literate-nav
+mkdocs-macros-plugin
+mkdocs-material-extensions
+mkdocs-material-pymdownx-extras
+mkdocs-redirects
+mkdocs-section-index
+pacfinder
+python-mechanicalsoup
+python-pytest-golden
+ttf-unifont
