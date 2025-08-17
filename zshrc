@@ -116,6 +116,9 @@ source $ZSH/oh-my-zsh.sh
 # Path to bat config
 export BAT_CONFIG_PATH="~/.config/bat/config.conf"
 
+# KeyGen
+alias xgen='ssh -t root@172.233.214.202 "sh /Docker/xeroiso/gen.sh"'
+
 # LibAwaita Theme
 export GTK_THEME=Layan-Dark
 
