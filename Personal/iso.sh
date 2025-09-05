@@ -39,7 +39,7 @@ case "$choice" in
   3)
     desktop="cosmic"
     dmDesktop="cosmic"
-    profileFolder="XeroCosmic"
+    profileFolder="CosmicX"
     outputSubFolder="Cosmic"
     ;;
   *)
