@@ -1,5 +1,7 @@
 # Figerprint Cosmic
 
+This guide explains how to enable fingerprint authentication on COSMIC desktop environment running on Arch Linux. It covers login, lock screen, and sudo prompts using fprintd and proper PAM configuration.
+
 - Install & Enroll :
 ```Bash
 sudo pacman -S fprintd
@@ -28,28 +30,27 @@ fprintd-verify
 ```
 - Enable for login, Polkit & Sudo :
 
+Edit `/etc/pam.d/system-local-login` add the following line
+```Bash
+auth optional pam_fprintd.so max_tries=1 timeout=10
+```
 for login, add this on top of `/etc/pam.d/login`...
 ```Bash
-auth [success=1 default=ignore] pam_succeed_if.so service in sudo:su:su-l tty in :unknown
-auth sufficient pam_fprintd.so
+auth required pam_securetty.so
 ```
 For polkit, create & modify `/etc/pam.d/polkit-1`
 ```Bash
 #%PAM-1.0
-auth [success=1 default=ignore] pam_succeed_if.so service in sudo:su:su-l tty in :unknown
-auth sufficient pam_fprintd.so
+auth       sufficient   pam_fprintd.so
 
-auth sufficient pam_fprintd.so
-auth sufficient pam_unix.so try_first_pass likeauth nullok
-auth include system-auth
-
-account include system-auth
-password include system-auth
-session include system-auth
+auth       include      system-auth
+account    include      system-auth
+session    include      system-auth
+password   include      system-auth
 ```
 for `sudo` add this on top of `/etc/pam.d/sudo`...
 ```Bash
-auth [success=1 default=ignore] pam_succeed_if.so service in sudo:su:su-l tty in :unknown
+auth sufficient pam_unix.so try_first_pass likeauth nullok
 auth sufficient pam_fprintd.so
 ```
 Now reboot & benefit !!!
