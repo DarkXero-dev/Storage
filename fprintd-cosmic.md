@@ -1,6 +1,6 @@
 # Figerprint Cosmic
 
-This guide explains how to enable fingerprint authentication on COSMIC desktop environment running on Arch Linux. It covers login, lock screen, and sudo prompts using fprintd and proper PAM configuration.
+Since there's no proper Fingerprint GUI app yet for **Cosmic**, here's how to enable fingerprint authentication on this desktop environment running on Arch Linux. It covers login, lock screen, and sudo prompts using fprintd and proper PAM configuration.
 
 - Install & Enroll :
 ```Bash
