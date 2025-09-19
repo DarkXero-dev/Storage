@@ -28,6 +28,8 @@ To verify :
 ```Bash
 fprintd-verify
 ```
+Make sure to swipe finger from all sides n stuff...
+
 - Enable for login, Polkit & Sudo :
 
 for login, add this on top of `/etc/pam.d/login`...
@@ -52,6 +54,6 @@ for `sudo` add this on top of `/etc/pam.d/sudo`...
 auth    [success=1  default=ignore] pam_succeed_if.so service in sudo:su:su-l tty in :unknown
 auth    sufficient  pam_fprintd.so
 ```
-Polkit (GUI) will continue to prompt for password since this hasn't yet been implemented in **Cosmic**, just swipe your finger and it will authenticate. I hope it's implemented soon though !
+Polkit (GUI) will continue to prompt for password since this hasn't yet been implemented in **Cosmic**, just swipe your finger and it will authenticate. Terminal works as it should as for login might take a few tries, if it fails it will fall back to password. I hope it's implemented soon though !
 
 Now reboot & benefit !!!
