@@ -36,12 +36,15 @@ auth    optional  pam_fprintd.so max_tries=1 timeout=10
 ```
 for login, add this on top of `/etc/pam.d/login`...
 ```Bash
-auth    required  pam_securetty.so
+auth    [success=1 default=ignore]  pam_succeed_if.so service in sudo:su:su-l tty in :unknown
+auth    sufficient  pam_fprintd.so
 ```
 For polkit, create & modify `/etc/pam.d/polkit-1`
 ```Bash
 #%PAM-1.0
+auth       [success=1 default=ignore]  pam_succeed_if.so service in sudo:su:su-l tty in :unknown
 auth       sufficient   pam_fprintd.so
+auth       sufficient   pam_unix.so try_first_pass likeauth nullok
 
 auth       include      system-auth
 account    include      system-auth
@@ -50,7 +53,9 @@ password   include      system-auth
 ```
 for `sudo` add this on top of `/etc/pam.d/sudo`...
 ```Bash
-auth    sufficient  pam_unix.so try_first_pass likeauth nullok
+auth    [success=1  default=ignore] pam_succeed_if.so service in sudo:su:su-l tty in :unknown
 auth    sufficient  pam_fprintd.so
 ```
+Polkit (GUI) will continue to prompt for password since this hasn't yet been implemented in **Cosmic**, just swipe your finger and it will authenticate. I hope it's implemented soon though !
+
 Now reboot & benefit !!!
