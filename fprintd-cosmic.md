@@ -1,6 +1,6 @@
 # Figerprint Cosmic
 
-Since there's no proper Fingerprint GUI app yet for **Cosmic**, here's how to enable fingerprint authentication on this desktop environment running on Arch Linux. It covers login, lock screen, and sudo prompts using fprintd and proper PAM configuration.
+Since there's no proper *Fingerprint GUI* app yet for **Cosmic**, here's how to enable fingerprint authentication on this desktop environment running on Arch Linux. It covers login, lock screen, and sudo prompts using fprintd and proper PAM configuration.
 
 - Install & Enroll :
 ```Bash
@@ -32,11 +32,11 @@ fprintd-verify
 
 Edit `/etc/pam.d/system-local-login` add the following line
 ```Bash
-auth optional pam_fprintd.so max_tries=1 timeout=10
+auth    optional  pam_fprintd.so max_tries=1 timeout=10
 ```
 for login, add this on top of `/etc/pam.d/login`...
 ```Bash
-auth required pam_securetty.so
+auth    required  pam_securetty.so
 ```
 For polkit, create & modify `/etc/pam.d/polkit-1`
 ```Bash
