@@ -50,7 +50,7 @@ password   include      system-auth
 ```
 for `sudo` add this on top of `/etc/pam.d/sudo`...
 ```Bash
-auth sufficient pam_unix.so try_first_pass likeauth nullok
-auth sufficient pam_fprintd.so
+auth    sufficient  pam_unix.so try_first_pass likeauth nullok
+auth    sufficient  pam_fprintd.so
 ```
 Now reboot & benefit !!!
