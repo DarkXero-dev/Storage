@@ -30,10 +30,6 @@ fprintd-verify
 ```
 - Enable for login, Polkit & Sudo :
 
-Edit `/etc/pam.d/system-local-login` add the following line
-```Bash
-auth    optional  pam_fprintd.so max_tries=1 timeout=10
-```
 for login, add this on top of `/etc/pam.d/login`...
 ```Bash
 auth    [success=1 default=ignore]  pam_succeed_if.so service in sudo:su:su-l tty in :unknown
