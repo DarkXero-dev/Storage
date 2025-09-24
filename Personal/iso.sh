@@ -27,7 +27,7 @@ case "$choice" in
   1)
     desktop="kde"
     dmDesktop="plasma"
-    profileFolder="XeroKDE"
+    profileFolder="Xero"
     outputSubFolder="KDE"
     ;;
   2)
@@ -44,12 +44,12 @@ case "$choice" in
     ;;
 esac
 
-isoLabel="xerolinux-${desktop}-$(date +"%Y.%m")-x86_64.iso"
+isoLabel="xerolinux-$(date +"%Y.%m")-x86_64.iso"
 
 # Setup paths relative to current directory
 WORKDIR=$(pwd)
 buildFolder="${WORKDIR}/build"
-outFolder="${WORKDIR}/XeroISO/${outputSubFolder}"
+outFolder="${WORKDIR}/XeroISO/"
 
 archisoRequiredVersion="archiso 85-1"
 archisoVersion=$(sudo pacman -Q archiso 2>/dev/null || echo "not-installed")
