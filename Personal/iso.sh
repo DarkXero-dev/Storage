@@ -7,19 +7,19 @@
 clear
 echo
 tput setaf 2
-echo "################################################################### "
-echo "            Welcome to the Unified XeroLinux ISO Builder            "
-echo "################################################################### "
+echo "########################################################### "
+echo "            Welcome to the XeroLinux ISO Builder            "
+echo "########################################################### "
 tput sgr0
 echo
 
 # --- Select Profile ---
 
-echo "Please select which ISO to build:"
+echo "Please select what you want to do :"
 echo
-echo "1) XeroLinux KDE"
-echo "2) XeroLinux Gnome"
-echo "3) XeroLinux Cosmic (Alpha)"
+echo "1) Build XeroLinux (KDE)"
+echo "2) Git Pull Latest Changes"
+echo "3) Visit Project's Dev Github"
 echo
 read -p "Enter selection (1, 2 or 3): " choice
 
@@ -31,16 +31,12 @@ case "$choice" in
     outputSubFolder="KDE"
     ;;
   2)
-    desktop="gnome"
-    dmDesktop="gnome"
-    profileFolder="XeroG"
-    outputSubFolder="Gnome"
+    git pull
+    exit 0
     ;;
   3)
-    desktop="cosmic"
-    dmDesktop="cosmic"
-    profileFolder="CosmicX"
-    outputSubFolder="Cosmic"
+    xdg-open "https://github.com/XeroLinuxDev"
+    exit 0
     ;;
   *)
     echo "Invalid selection. Exiting."
