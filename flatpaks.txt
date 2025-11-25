@@ -1,0 +1,17 @@
+com.chatterino.chatterino
+com.makemkv.MakeMKV
+com.obsproject.Studio
+com.rtosta.zapzap
+com.spotify.Client
+com.usebottles.bottles
+com.vivaldi.Vivaldi
+com.vysp3r.ProtonPlus
+de.haeckerfelix.Shortwave
+io.github.equicord.equibop
+io.github.flattool.Warehouse
+io.gitlab.theevilskeleton.Upscaler
+io.missioncenter.MissionCenter
+net.fasterland.converseen
+net.filebot.FileBot
+org.ferdium.Ferdium
+org.filezillaproject.Filezilla
