@@ -10,7 +10,7 @@
 #   curl -fsSL <URL_TO_THIS_FILE> | bash
 #   curl -fsSL <URL_TO_THIS_FILE> | bash -s -- --full
 #   curl -fsSL <URL_TO_THIS_FILE> | bash -s -- --check-ebpf --check-npm-cache
-echo ""
+
 set -euo pipefail
 
 BASE_URL="https://raw.githubusercontent.com/lenucksi/aur-malware-check/refs/heads/master"
@@ -20,7 +20,7 @@ PKG_LIST_URL="${BASE_URL}/package_list.txt"
 # Create isolated temp dir; clean up on exit or interrupt
 WORKDIR=$(mktemp -d)
 trap 'rm -rf "$WORKDIR"' EXIT INT TERM
-
+echo ""
 echo "[*] Fetching aur_check-v2.sh ..."
 if ! curl -fsSL "$SCRIPT_URL" -o "$WORKDIR/aur_check-v2.sh"; then
     echo >&2 "[ERROR] Failed to fetch script from: $SCRIPT_URL"
