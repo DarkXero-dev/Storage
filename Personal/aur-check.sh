@@ -10,7 +10,7 @@
 #   curl -fsSL <URL_TO_THIS_FILE> | bash
 #   curl -fsSL <URL_TO_THIS_FILE> | bash -s -- --full
 #   curl -fsSL <URL_TO_THIS_FILE> | bash -s -- --check-ebpf --check-npm-cache
-
+echo ""
 set -euo pipefail
 
 BASE_URL="https://raw.githubusercontent.com/lenucksi/aur-malware-check/refs/heads/master"
